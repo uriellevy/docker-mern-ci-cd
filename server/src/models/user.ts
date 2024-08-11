@@ -1,6 +1,6 @@
 import { getDB } from '../config/db';
 import { ObjectId, Document } from 'mongodb';
-import { IUserInput } from '../interfaces/user';
+import { IUser, IUserInput } from '../interfaces/user';
 
 interface Todo {
     _id?: ObjectId;
@@ -9,14 +9,19 @@ interface Todo {
     completed: boolean;
 }
 
-export const getTodos = async (): Promise<Todo[]> => {
+export const getUsers = async (): Promise<IUser[]> => {
     const db = getDB();
-    return await db.collection<Todo>('todos').find().toArray();
+    return await db.collection<IUser>('users').find().toArray();
 };
 
-export const getTodoById = async (id: string): Promise<Todo | null> => {
+export const getUser = async (id: string): Promise<IUser | null> => {
     const db = getDB();
-    return await db.collection<Todo>('todos').findOne({ _id: new ObjectId(id) });
+    return await db.collection<IUser>('users').findOne({ _id: new ObjectId(id)});
+};
+
+export const getUserByEmail = async (email: string): Promise<IUser | null> => {
+    const db = getDB();
+    return await db.collection<IUser>('users').findOne({ email });
 };
 
 export const createUser = async (user: IUserInput) => {
@@ -24,15 +29,15 @@ export const createUser = async (user: IUserInput) => {
     return await db.collection<IUserInput>('users').insertOne(user);
 };
 
-export const updateTodo = async (id: string, todo: Partial<Todo>) => {
+export const updateUser = async (id: string, user: Partial<IUser>) => {
     const db = getDB();
-    return await db.collection<Todo>('todos').updateOne(
+    return await db.collection<IUser>('users').updateOne(
         { _id: new ObjectId(id) },
-        { $set: todo }
+        { $set: user }
     );
 };
 
-export const deleteTodo = async (id: string) => {
+export const deleteUser = async (id: string) => {
     const db = getDB();
-    return await db.collection<Todo>('todos').deleteOne({ _id: new ObjectId(id) });
+    return await db.collection<IUser>('users').deleteOne({ _id: new ObjectId(id) });
 };

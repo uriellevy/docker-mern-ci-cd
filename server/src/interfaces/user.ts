@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 export interface IUserInput {
     name: {
         first: string;
@@ -9,15 +11,15 @@ export interface IUserInput {
     }
     email: string;
     password: string;
+    role?:UserRole
 }
 
 export interface IUser extends IUserInput {
-    role: UserRole;
-    _id: string;
+    _id: ObjectId | string;
 }
 
 export interface IJWTPayload {
-    _id: string;
+    _id: ObjectId | string;
     role: UserRole;
 }
 
