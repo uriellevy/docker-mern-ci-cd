@@ -1,4 +1,6 @@
 import { ObjectId } from 'mongodb';
+import { Request } from 'express';
+
 
 export interface IUserInput {
     name: {
@@ -16,6 +18,8 @@ export interface IUserInput {
 
 export interface IUser extends IUserInput {
     _id: ObjectId | string;
+    createdAt: Date
+    updatedAt: Date
 }
 
 export interface IJWTPayload {
@@ -24,3 +28,8 @@ export interface IJWTPayload {
 }
 
 export type UserRole = "basic" | "admin"
+
+export interface AuthenticatedRequest extends Request {
+    // role?: UserRole;
+    userId?: string;
+}

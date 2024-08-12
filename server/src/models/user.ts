@@ -1,13 +1,6 @@
 import { getDB } from '../config/db';
-import { ObjectId, Document } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { IUser, IUserInput } from '../interfaces/user';
-
-interface Todo {
-    _id?: ObjectId;
-    title: string;
-    description: string;
-    completed: boolean;
-}
 
 export const getUsers = async (): Promise<IUser[]> => {
     const db = getDB();

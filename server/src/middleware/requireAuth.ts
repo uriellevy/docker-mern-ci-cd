@@ -1,12 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../exceptions/appError';
 import { verifyToken } from '../utils/jwt';
-import { IJWTPayload, UserRole } from '../interfaces/user';
-
-export interface AuthenticatedRequest extends Request {
-    // role?: UserRole;
-    userId?: string;
-}
+import { AuthenticatedRequest, IJWTPayload } from '../interfaces/user';
 
 export const requireAdminAuth = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const {authorization} = req.headers;

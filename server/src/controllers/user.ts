@@ -5,7 +5,7 @@ import { generateToken } from '../utils/jwt';
 import { AppError } from '../exceptions/appError';
 
 export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { password, email } = req.body;
+    const { password, email, role } = req.body;
 
     if (!password || !email) return next(new AppError('Password and email are required', 400));
 
@@ -15,7 +15,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
 
         if (user) return next(new AppError('User is already registered', 400));
 
-        await createUser({ ...req.body, password: hashedPassword });
+        await createUser({ ...req.body, password: hashedPassword, role: role || "basic" });
         res.status(201).json({ message: 'User created successfully' });
     } catch (err) {
         next(err);
