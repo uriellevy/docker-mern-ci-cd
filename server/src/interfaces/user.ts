@@ -23,4 +23,4 @@ export interface IJWTPayload {
     role: UserRole;
 }
 
-type UserRole = "basic" | "admin"
+export type UserRole = "basic" | "admin"
