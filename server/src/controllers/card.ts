@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../exceptions/appError';
 import { AuthenticatedRequest } from '../interfaces/user';
-import { createNewCard } from '../models/card';
+import { createNewCard, deleteCard, getCards } from '../models/card';
 
 export const createCard = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
         const cardData = {...req.body,userId: req.userId};
@@ -14,14 +14,14 @@ export const createCard = async (req: AuthenticatedRequest, res: Response, next:
 };
 
 export const getAllCards = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-
     try {
-
-        res.status(201).json({ message: 'Card created successfully' });
+        const cards = await getCards(); 
+        res.status(201).json({ message: 'Card created successfully', cards });
     } catch (err) {
         next(err);
     }
 };
+
 export const getMyCards = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
     try {
@@ -52,10 +52,13 @@ export const editCardById = async (req: Request, res: Response, next: NextFuncti
     }
 };
 export const deleteCardById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const {id} = req.params;
 
     try {
+        const deletedCard = await deleteCard(id);
+        if(!deletedCard.deletedCount) return next(new AppError('Card not found', 404));
 
-        res.status(201).json({ message: 'Card created successfully' });
+        res.status(201).json({ message: 'Card deleted successfully' });
     } catch (err) {
         next(err);
     }

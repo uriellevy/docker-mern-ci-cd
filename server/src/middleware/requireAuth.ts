@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { AppError } from '../exceptions/appError';
 import { verifyToken } from '../utils/jwt';
 import { AuthenticatedRequest, IJWTPayload } from '../interfaces/user';

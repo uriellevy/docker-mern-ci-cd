@@ -1,10 +1,11 @@
 import express from "express";
 import { deleteUserById, getAllUsers, getUserById, login, signup, updateUserById } from "../controllers/user";
 import { requireAdminAuth, requireAuth } from "../middleware/requireAuth";
+import { signupValidation } from "../middleware/formValidations/signupValidator";
 
 const router = express.Router();
 
-router.post("/signup", signup);
+router.post("/signup",signupValidation, signup);
 router.post("/login", login);
 router.get("/:id",requireAuth, getUserById);
 router.put("/:id",requireAuth ,updateUserById);
