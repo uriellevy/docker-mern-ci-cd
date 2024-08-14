@@ -28,8 +28,8 @@ app.all('*', (req, res, next) => {
 // Global error handling middleware
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(chalk.blue.bgBlue.bold(`Server is running on  http://localhost:${PORT}`));
+app.listen(parseInt(PORT), '0.0.0.0',  () => {
+  console.log(chalk.blue.bgBlue.bold(`Server is running on  port:${PORT}`));
 });
 
 connectDB();

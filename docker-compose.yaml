@@ -1,0 +1,21 @@
+services:
+  server:
+    # build: server
+    image: node:18-alpine
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - ./server:/app
+    command: [ "sh", "-c", "cd /app && npm install && npm start" ]
+    depends_on:
+      - mongo
+    env_file:
+      - ./server/.env
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
