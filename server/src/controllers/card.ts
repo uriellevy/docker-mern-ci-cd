@@ -16,7 +16,7 @@ export const createCard = async (req: AuthenticatedRequest, res: Response, next:
 export const getAllCards = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const cards = await getCards(); 
-        res.status(201).json({ message: 'Card created successfully', cards });
+        res.status(201).json({ message: 'Card Fetched successfully', cards });
     } catch (err) {
         next(err);
     }

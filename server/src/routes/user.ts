@@ -9,7 +9,7 @@ router.post("/signup",signupValidation, signup);
 router.post("/login", login);
 router.get("/:id",requireAuth, getUserById);
 router.put("/:id",requireAuth ,updateUserById);
-router.get("/", requireAdminAuth,getAllUsers);
+router.get("/"/* , requireAdminAuth */,getAllUsers);
 router.delete("/:id",requireAdminAuth,deleteUserById);
 
 export default router;
