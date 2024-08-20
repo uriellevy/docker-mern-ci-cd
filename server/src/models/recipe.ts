@@ -1,25 +1,38 @@
 import { getDB } from '../config/db';
 import { ObjectId } from 'mongodb';
-import { IRecipe, IRecipeInput } from '../interfaces/recipe';
+import { IFilters, IRecipe, ISortOptions } from '../interfaces/recipe';
 
-export const getRecipes = async (): Promise<IRecipe[]> => {
+export const getRecipes = async (filters:IFilters, sortOptions:ISortOptions): Promise<IRecipe[]> => {
     const db = getDB();
-    return await db.collection<IRecipe>('recipes').find().toArray();
-}
-;
-export const getMyRecipes = async (recipeId:string): Promise<IRecipe[]> => {
+    return await db.collection<IRecipe>('recipes').find(filters).sort(sortOptions).toArray();
+};
+    
+export const getUserRecipes = async (userId: string): Promise<IRecipe[]> => {
     const db = getDB();
-    return await db.collection<IRecipe>('recipes').find({_id: recipeId}).toArray();//should implement
+    return await db.collection<IRecipe>('recipes').find({ userId }).toArray();
 };
 
 export const getRecipe = async (id: string): Promise<IRecipe | null> => {
     const db = getDB();
-    return await db.collection<IRecipe>('recipes').findOne({ _id: new ObjectId(id)});
+    return await db.collection<IRecipe>('recipes').findOne({ _id: new ObjectId(id) });
 };
 
-export const createNewRecipe = async (recipe: IRecipeInput) => {
+export const getCuisine = async (): Promise<string[]> => {
     const db = getDB();
-    return await db.collection<IRecipeInput>('recipes').insertOne(recipe);
+
+    const result = await db.collection<IRecipe>('recipes')
+        .aggregate([
+            { $group: { _id: "$cuisine" } },
+            { $project: { _id: 0, cuisine: "$_id" } }
+        ])
+        .toArray();
+
+    return result.map(item => item.cuisine);
+};
+
+export const createNewRecipe = async (recipe: IRecipe) => {
+    const db = getDB();
+    return await db.collection<IRecipe>('recipes').insertOne({ ...recipe });
 };
 
 export const updateRecipe = async (id: string, recipe: Partial<IRecipe>) => {
@@ -34,3 +47,10 @@ export const deleteRecipe = async (id: string) => {
     const db = getDB();
     return await db.collection<IRecipe>('recipes').deleteOne({ _id: new ObjectId(id) });
 };
+
+export const toggleLike = async (recipe: IRecipe, userId: string) => {
+    const db = getDB();
+    const isAlreadyLiked = recipe.likes.includes(userId);
+    const query = isAlreadyLiked ? { $pull: { likes: userId } } : { $push: { likes: userId } };
+    return await db.collection<IRecipe>('recipes').findOneAndUpdate({ _id: new ObjectId(recipe._id) }, query)
+}

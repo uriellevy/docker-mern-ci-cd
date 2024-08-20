@@ -30,3 +30,12 @@ export interface IRecipe extends IRecipeInput {
     updatedAt: Date
     userId:string
 }
+
+export interface IFilters {
+    cuisine?: string
+}
+
+export interface ISortOptions {
+    [key: string]: 1 | -1
+    // likes?: 1 | -1
+}
