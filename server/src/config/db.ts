@@ -8,7 +8,6 @@ let db: Db;
 export const connectDB = async (): Promise<void> => {
     try {
         const client = new MongoClient(process.env.MONGO_URI as string);
-        console.log(process.env.MONGO_URI)
         await client.connect();
         db = client.db('docker-app');
         console.log('MongoDB connected...');

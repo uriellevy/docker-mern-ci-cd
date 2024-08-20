@@ -1,16 +1,16 @@
 import express from "express";
-import { createCard, getAllCards, getCardById, editCardById, deleteCardById, toggleCardLike, getMyCards } from "../controllers/card";
+import { createRecipe, getAllRecipes, getRecipeById, editRecipeById, deleteRecipeById, toggleRecipeLike, getMyRecipes} from "../controllers/recipe";
 import { requireAuth } from "../middleware/requireAuth";
-import { recipeValidation } from "../middleware/formValidations/cardValidation";
+import { recipeValidation } from "../middleware/formValidations/recipeValidation";
 
 const router = express.Router();
 
-router.post("/", requireAuth, recipeValidation, createCard);
-router.get("/", getAllCards);
-router.get("/myCards", requireAuth, getMyCards);
-router.get("/:id", getCardById);
-router.delete("/:id", requireAuth, deleteCardById);
-router.put("/:id", requireAuth, recipeValidation, editCardById);
-router.patch("/:id", requireAuth, toggleCardLike);
+router.post("/", requireAuth, recipeValidation, createRecipe);
+router.get("/", getAllRecipes);
+router.get("/myRecipes", requireAuth, getMyRecipes);
+router.get("/:id", getRecipeById);
+router.delete("/:id", requireAuth, deleteRecipeById);
+router.put("/:id", requireAuth, recipeValidation, editRecipeById);
+router.patch("/:id", requireAuth, toggleRecipeLike);
 
 export default router;

@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import morgan from 'morgan';
-import chalk from 'chalk';
 import { connectDB } from "./config/db";
 import {user, recipe} from "./routes";
 import { AppError } from "./exceptions/appError";
@@ -29,7 +28,7 @@ app.all('*', (req, res, next) => {
 app.use(errorHandler);
 
 app.listen(parseInt(PORT), '0.0.0.0',  () => {
-  console.log(chalk.blue.bgBlue.bold(`Server is running on  port:${PORT}`));
+  console.log(`Server is running on port:${PORT}`);
 });
 
 connectDB();
