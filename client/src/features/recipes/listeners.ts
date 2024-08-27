@@ -12,7 +12,7 @@ listenerMiddleware.startListening({
     console.log('Fetching recipes...')
     try {
       const data = await fetchAllRecipes()
-      listenerApi.dispatch(setRecipes(data))
+      listenerApi.dispatch(setRecipes(data.recipes))
     } catch (error) {
       console.error('Failed to fetch recipes:', error)
     }
