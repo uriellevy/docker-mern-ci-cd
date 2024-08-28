@@ -48,9 +48,27 @@ export const editRecipeById = async (recipeId: string, recipe: IRecipeInput) => 
 
 export const deleteRecipeById = async (recipeId: string) => {
   try {
-    const response = await axios.put(`http://localhost:8080/api/recipes/${recipeId}`)
+    const response = await axios.delete(`http://localhost:8080/api/recipes/${recipeId}`)
     return response.data
   } catch (error) {
     throw new Error('Failed to create recipe')
   }
 }
+
+export const toggleRecipeLike = async (userId: string, recipeId: string) => {
+  try {
+    const response = await axios.patch(`http://localhost:8080/api/recipes/${recipeId}`)
+    return response.data
+  } catch (error) {
+    throw new Error('Failed to create recipe')
+  }
+}
+
+// export const getCuisineList = async () => {
+//   try {
+//     const response = await axios.get(`http://localhost:8080/api/recipes`)
+//     return response.data
+//   } catch (error) {
+//     throw new Error('Failed to create recipe')
+//   }
+// }

@@ -1,14 +1,25 @@
 import { Outlet } from 'react-router-dom'
-import './App.css'
 import useRouteChange from './hooks/useRouteChange'
+import { createTheme, MantineProvider } from '@mantine/core';
+import AppLayout from './components/appLayout/AppLayout';
 
 function App() {
   useRouteChange()
+  const theme = createTheme({
+    fontFamily: 'Montserrat, sans-serif',
+    defaultRadius: 'md',
+  });
+
 
   return (
-    <div className='app'>
-      <Outlet/>
-    </div>
+    <>
+      <MantineProvider theme={theme} defaultColorScheme='dark'>
+        <div className='app'>
+          <AppLayout/>
+          <Outlet />
+        </div>
+      </MantineProvider>
+    </>
   )
 }
 
