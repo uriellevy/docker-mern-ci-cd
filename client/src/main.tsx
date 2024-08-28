@@ -10,6 +10,11 @@ import {
 import Home from './pages/home/Home.tsx'
 import Recipes from './pages/recipes/Recipes.tsx'
 import '@mantine/core/styles.css';
+import MyRecipes from './pages/myRecipes/MyRecipes.tsx'
+import Login from './pages/login/Login.tsx'
+import Signup from './pages/signup/Signup.tsx'
+import Favorites from './pages/favorites/Favorites.tsx'
+import Users from './pages/users/Users.tsx'
 
 
 const router = createBrowserRouter([
@@ -24,6 +29,26 @@ const router = createBrowserRouter([
       {
         path: "/recipes",
         element: <Recipes />
+      },
+      {
+        path: "/myRecipes",
+        element: <MyRecipes />
+      },
+      {
+        path: "/favorites",
+        element: <Favorites />
+      },
+      {
+        path: "/login",
+        element: <Login />
+      },
+      {
+        path: "/signup",
+        element: <Signup />
+      },
+      {
+        path: "/users",
+        element: <Users />
       },
     ]
   },
