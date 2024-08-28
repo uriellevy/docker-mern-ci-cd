@@ -6,9 +6,6 @@ import { MdSunny, MdOutlineStarPurple500, MdFastfood, MdOutlineDoorSliding, MdOu
 import { FaMoon, FaUsers } from "react-icons/fa";
 import { BiSolidExit } from "react-icons/bi";
 import { SiFoodpanda } from "react-icons/si";
-import {  } from "react-icons/md";
-
-
 import classes from "./AppLayout.module.scss"
 import { UserButton } from '../userButton.tsx/UserButton';
 import { CONSTS } from '../../consts/consts';
@@ -23,14 +20,14 @@ const AppLayout = () => {
         <MdSunny
             color={theme.colors.yellow[4]}
             size={"1rem"}
-            onClick={toggleColorScheme}
+            // onClick={toggleColorScheme}
         />
     );
 
     const moonIcon = (
         <FaMoon
             color={theme.colors.blue[6]}
-            onClick={toggleColorScheme}
+            // onClick={toggleColorScheme}
             size={"1rem"}
         />
     );
@@ -57,7 +54,7 @@ const AppLayout = () => {
                         <SiFoodpanda size={"2.5rem"} className={classes.appLogo}/>
                         <Title order={3}>{CONSTS.APP_HEADER_NAME}</Title>
                     </Container>
-                    <Switch size="md" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} />
+                    <Switch size="md" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onChange={toggleColorScheme} className={classes.switchToggler}/>
                 </AppShell.Header>
 
                 <AppShell.Navbar p="md" className={classes.navbarWrapper}>
