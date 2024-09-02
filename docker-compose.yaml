@@ -1,6 +1,5 @@
 services:
   server:
-    # build: server
     image: node:18-alpine
     restart: unless-stopped
     ports:
@@ -21,6 +20,8 @@ services:
     volumes:
       - ./client:/app
     command: [ "sh", "-c", "cd /app && npm install && npm run dev" ]
+    # environment:
+    #   - CHOKIDAR_USEPOLLING=true # Enables polling for file changes(hot reload)
 
   mongo:
     image: mongo

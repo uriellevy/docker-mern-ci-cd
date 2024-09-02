@@ -11,4 +11,12 @@ export default defineConfig({
       },
     },
   },
+  //docker compose hot reload config:
+  server: {
+    watch: {
+      usePolling: true, // Enables polling
+    },
+    host: true, // Allows the server to be accessible externally
+    port: 5173,
+  },
 })
