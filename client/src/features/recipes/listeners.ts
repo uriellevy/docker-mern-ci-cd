@@ -8,7 +8,7 @@ export const getAllRecipes = createAction('recipes/getAll')
 
 listenerMiddleware.startListening({
   actionCreator: getAllRecipes,
-  effect: async (action, listenerApi) => {
+  effect: async (_action, listenerApi) => {
     console.log('Fetching recipes...')
     try {
       const data = await fetchAllRecipes()

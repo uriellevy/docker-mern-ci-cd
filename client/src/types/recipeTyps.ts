@@ -24,7 +24,7 @@ export interface IRecipeIngredient {
 export interface IRecipe extends IRecipeInput {
     likes: string[]
     _id: string
-    createdAt: Date
-    updatedAt: Date
+    createdAt: Date | string
+    updatedAt: Date | string
     userId: string
 }

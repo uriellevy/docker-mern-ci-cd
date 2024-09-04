@@ -5,7 +5,7 @@ import { recipeValidation } from "../middleware/formValidations/recipeValidation
 
 const router = express.Router();
 
-router.post("/", requireAuth, recipeValidation, createRecipe);
+router.post("/",/*  requireAuth,  */recipeValidation, createRecipe);
 router.get("/", getAllRecipes);
 router.get("/myRecipes", requireAuth, getMyRecipes);
 router.get("/cuisineList"/* , requireAuth, */, getCuisineList);
