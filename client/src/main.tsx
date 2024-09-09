@@ -15,6 +15,7 @@ import Login from './pages/login/Login.tsx'
 import Signup from './pages/signup/Signup.tsx'
 import Favorites from './pages/favorites/Favorites.tsx'
 import Users from './pages/users/Users.tsx'
+import NewRecipe from './pages/newRecipe/NewRecipe.tsx'
 
 
 const router = createBrowserRouter([
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/favorites",
         element: <Favorites />
+      },
+      {
+        path: "/newRecipe",
+        element: <NewRecipe />
       },
       {
         path: "/login",

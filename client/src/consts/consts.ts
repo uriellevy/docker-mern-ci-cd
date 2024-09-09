@@ -11,6 +11,10 @@ export const CONSTS = {
     SIGNUP: {
         TITLE: "Signup",
         SUBMIT_TITLE:"Sign up",
+    },
+    NEW_RECIPE:{
+        TITLE: "New Recipe",
+        SUBMIT_TITLE:"Create"
     }
 }
 

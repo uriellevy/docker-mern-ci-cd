@@ -2,7 +2,7 @@ import { AppShell, Burger, Container, NavLink, Switch, Title, useMantineColorSch
 import { useDisclosure } from '@mantine/hooks';
 import { NavLink as RouterNavLink, Outlet } from 'react-router-dom';
 import { FaHome } from "react-icons/fa";
-import { MdSunny, MdOutlineStarPurple500, MdFastfood, MdOutlineDoorSliding, MdOutlineContactPage } from "react-icons/md";
+import { MdSunny, MdOutlineStarPurple500, MdFastfood, MdOutlineDoorSliding, MdOutlineContactPage, MdOutlineAddCircleOutline } from "react-icons/md";
 import { FaMoon, FaUsers } from "react-icons/fa";
 import { BiSolidExit } from "react-icons/bi";
 import { SiFoodpanda } from "react-icons/si";
@@ -20,7 +20,7 @@ const AppLayout = () => {
         <MdSunny
             color={theme.colors.yellow[4]}
             size={"1rem"}
-            // onClick={toggleColorScheme}
+        // onClick={toggleColorScheme}
         />
     );
 
@@ -51,10 +51,10 @@ const AppLayout = () => {
                         size="sm"
                     />
                     <Container className={classes.logoContainer}>
-                        <SiFoodpanda size={"2.5rem"} className={classes.appLogo}/>
+                        <SiFoodpanda size={"2.5rem"} className={classes.appLogo} />
                         <Title order={3}>{CONSTS.APP_HEADER_NAME}</Title>
                     </Container>
-                    <Switch size="md" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onChange={toggleColorScheme} className={classes.switchToggler}/>
+                    <Switch size="md" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onChange={toggleColorScheme} className={classes.switchToggler} />
                 </AppShell.Header>
 
                 <AppShell.Navbar p="md" className={classes.navbarWrapper}>
@@ -107,7 +107,14 @@ const AppLayout = () => {
                         component={RouterNavLink}
                         onClick={close}
                     />
-                     <NavLink
+                    <NavLink
+                        to="/newRecipe"
+                        label="New Recipe"
+                        leftSection={<MdOutlineAddCircleOutline />}
+                        component={RouterNavLink}
+                        onClick={close}
+                    />
+                    <NavLink
                         label="Logout"
                         leftSection={<BiSolidExit />}
                     />

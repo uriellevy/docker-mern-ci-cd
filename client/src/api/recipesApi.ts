@@ -10,7 +10,7 @@ export const fetchAllRecipes = async () => {
   }
 }
 
-export const createRecipe = async (recipe:IRecipeInput) => {
+export const createRecipeHandler = async (recipe:IRecipeInput) => {
   try {
     const response = await axios.post('http://localhost:8080/api/recipes', recipe)
     return response.data
