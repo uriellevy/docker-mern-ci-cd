@@ -72,7 +72,6 @@ export const recipeValidationSchema: Schema = {
             errorMessage: 'Image URL must be a valid URL',
         },
         trim: true,
-        escape: true,
     },
     prepTime: {
         isNumeric: {

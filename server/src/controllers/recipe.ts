@@ -7,6 +7,7 @@ import { IFilters, ISortOptions } from '../interfaces/recipe';
 export const createRecipe = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     const {body,userId} = req;
     const recipeData = { ...body, userId, createdAt: new Date(), updatedAt: new Date(), likes:[]};
+    console.log(recipeData)
     try {
         await createNewRecipe(recipeData);
         res.status(201).json({ message: 'Recipe created successfully' });
