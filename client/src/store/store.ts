@@ -1,14 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import recipesReducer from "../features/recipes/recipeSlice";
-import listenerMiddleware from '../features/recipes/listeners';
-import { routeChangeListenerMiddleware } from '../middleware/routeChangeListener';
+import { recipeApi } from '../features/recipes/RecipeApi';
 
 export const store = configureStore({
     reducer: {
-        recipes: recipesReducer,
+        [recipeApi.reducerPath]: recipeApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend(listenerMiddleware.middleware).concat(routeChangeListenerMiddleware),
+    getDefaultMiddleware().concat(recipeApi.middleware),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

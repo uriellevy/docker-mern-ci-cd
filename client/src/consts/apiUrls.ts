@@ -5,7 +5,9 @@ const usersPrefix = "/users";
 
 //users
 export const baseUsersApi =  () => `${apiPrefix}${usersPrefix}`;
-export const getUserById = (id: string) => `${baseUsersApi()}/${id}`;
+export const getUserById = (id: string) => `${baseUsersApi()}/${id}`;//get,put,delete
+export const userSignup = () => `${baseUsersApi()}/signup`;
+export const userLogin = () => `${baseUsersApi()}/login`;
 
 //recipes
 export const baseRecipesApi = () => `${apiPrefix}${recipesEntityPrefix}`; //get,post

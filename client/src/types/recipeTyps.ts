@@ -28,3 +28,8 @@ export interface IRecipe extends IRecipeInput {
     updatedAt: Date | string
     userId: string
 }
+
+export interface IRecipeResponse {
+    recipes: IRecipe[]
+    message: string
+}

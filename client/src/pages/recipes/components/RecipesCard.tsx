@@ -9,11 +9,13 @@ interface IRecipesCardProps {
 }
 
 const RecipesCard = ({recipe}:IRecipesCardProps) => {
+
+  console.log(decodeURIComponent(recipe.image.url))
   
     return (
       <Card withBorder radius="md" p="md" className={classes.card} maw={350}>
         <Card.Section>
-          <Image src={recipe.image.url} alt={recipe.image.alt} height={180} />
+          <Image src={decodeURIComponent(recipe.image.url)} alt={recipe.image.alt} height={180} />
         </Card.Section>
   
         <Card.Section className={classes.section} mt="md">

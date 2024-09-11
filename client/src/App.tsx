@@ -1,9 +1,7 @@
-import useRouteChange from './hooks/useRouteChange'
 import { createTheme, MantineProvider } from '@mantine/core';
 import AppLayout from './components/appLayout/AppLayout';
 
 function App() {
-  useRouteChange()
   const theme = createTheme({
     fontFamily: 'Montserrat, sans-serif',
     defaultRadius: 'md',
