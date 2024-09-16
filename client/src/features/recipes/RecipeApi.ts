@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IRecipe, IRecipeResponse } from '../../types/recipeTyps';
+import { IRecipe, IRecipeResponse, IRecipesResponse } from '../../types/recipeTyps';
 
 export const recipeApi = createApi({
   reducerPath: 'recipeApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/recipes' }),
   tagTypes: ['Recipe'],
   endpoints: (builder) => ({
-    getRecipes: builder.query<IRecipeResponse, void>({
+    getRecipes: builder.query<IRecipesResponse, void>({
       query: () => '/',
       providesTags: ['Recipe'],
     }),
@@ -14,7 +14,7 @@ export const recipeApi = createApi({
       query: (id) => `/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'Recipe', id }],
     }),
-    createRecipe: builder.mutation<IRecipeResponse, Partial<IRecipeResponse>>({
+    createRecipe: builder.mutation<IRecipesResponse, Partial<IRecipesResponse>>({
       query: (recipe) => ({
         url: '/',
         method: 'POST',

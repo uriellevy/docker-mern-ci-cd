@@ -10,8 +10,10 @@ export interface IRecipeInput {
     cookTime: number
     servings: number
     cuisine: string
-    difficulty: string
+    difficulty: TDifficulty
 }
+
+export type TDifficulty = "Easy" | "Medium" | "Hard";
 
 export interface IRecipeIngredient {
     amount: {
@@ -29,7 +31,11 @@ export interface IRecipe extends IRecipeInput {
     userId: string
 }
 
-export interface IRecipeResponse {
+export interface IRecipesResponse {
     recipes: IRecipe[]
+    message: string
+}
+export interface IRecipeResponse {
+    recipe: IRecipe
     message: string
 }

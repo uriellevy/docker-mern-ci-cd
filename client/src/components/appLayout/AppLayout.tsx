@@ -71,6 +71,7 @@ const AppLayout = () => {
                         leftSection={<MdFastfood />}
                         component={RouterNavLink}
                         onClick={close}
+                        end
                     />
                     <NavLink
                         to="/login"

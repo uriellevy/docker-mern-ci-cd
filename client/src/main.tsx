@@ -16,6 +16,7 @@ import Signup from './pages/signup/Signup.tsx'
 import Favorites from './pages/favorites/Favorites.tsx'
 import Users from './pages/users/Users.tsx'
 import NewRecipe from './pages/newRecipe/NewRecipe.tsx'
+import SingleRecipe from './pages/singleRecipe/SingleRecipe.tsx'
 
 
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/recipes",
         element: <Recipes />
+      },
+      {
+        path: "/recipes/:id",
+        element: <SingleRecipe />
       },
       {
         path: "/myRecipes",

@@ -9,6 +9,7 @@ import {
     Select,
     Group,
     ActionIcon,
+    Switch,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
@@ -16,10 +17,11 @@ import { z } from 'zod';
 import classes from "./NewRecipe.module.scss";
 import { CONSTS } from '../../consts/consts';
 import { MdDelete } from "react-icons/md";
+import { useCreateRecipeMutation } from '../../features/recipes/RecipeApi';
 
 const schema = z.object({
-    name: z.string().min(1, { message: 'Recipe name is required' }),
-    cuisine: z.string().min(1, { message: 'Cuisine is required' }),
+    name: z.string().min(2, { message: 'Min 2 letters required' }),
+    cuisine: z.string().min(2, { message: 'Min 2 letters required' }),
     difficulty: z.enum(['Easy', 'Medium', 'Hard']),
     prepTime: z.number().min(0, { message: 'Prep time must be at least 0' }),
     cookTime: z.number().min(0, { message: 'Cook time must be at least 0' }),
@@ -42,6 +44,7 @@ const schema = z.object({
 
 const NewRecipe = () => {
     const { TITLE, SUBMIT_TITLE } = CONSTS.NEW_RECIPE;
+    const [createRecipe/* , { isLoading, isError, isSuccess } */] = useCreateRecipeMutation();
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
@@ -66,24 +69,25 @@ const NewRecipe = () => {
         form.insertListItem('ingredients', { amount: { value: 1, units: '' }, ingredient: '' });
     };
 
-    // Function to remove an ingredient by index
     const removeIngredient = () => {
         form.removeListItem('ingredients', form.getValues().ingredients.length - 1);
     };
-
 
     const addStep = () => {
         form.insertListItem('instructions', '');
     };
 
-    // Function to remove an ingredient by index
     const removeStep = () => {
         form.removeListItem('instructions', form.getValues().instructions.length - 1);
     };
 
-    const handleSubmit = (values: any) => {
-        // form.validate();
-        console.log(values);
+    const handleSubmit = async (values: any) => {
+        try {
+            const result = await createRecipe(values).unwrap();
+            console.log('Recipe created successfully:', result);
+        } catch (error) {
+            console.error('Failed to create recipe:', error);
+        }
     };
 
     return (
@@ -162,7 +166,11 @@ const NewRecipe = () => {
                             required
                         />
                     </SimpleGrid>
-
+                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="xl">
+                    <Switch
+                        label="Vegan recipe"
+                    />
+                    </SimpleGrid>
                     <Title order={4} mt="xl">
                         Ingredients
                     </Title>

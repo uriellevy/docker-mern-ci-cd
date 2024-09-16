@@ -15,7 +15,16 @@ export const CONSTS = {
     NEW_RECIPE:{
         TITLE: "New Recipe",
         SUBMIT_TITLE:"Create"
-    }
+    },
+    RECIPES:{
+        SHOW_DETAILS: "Show details",
+    },
+    SINGLE_RECIPE:{
+        COOK_TIME: "Cook Time",
+        PREP_TIME: "Prep Time",
+        SERVINGS: "Servings",
+        DIFFICULTY_LEVEL: "Difficulty"
+    },
 }
 
 export const dummyData:IRecipe[] = [
