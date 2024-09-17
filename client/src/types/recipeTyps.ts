@@ -11,6 +11,17 @@ export interface IRecipeInput {
     servings: number
     cuisine: string
     difficulty: TDifficulty
+    spicyLevel: SpicyLevel
+    isVegan: boolean
+}
+
+export enum SpicyLevel {
+    None = 0,
+    A_little_Spicy = 1,
+    Spicy = 2,
+    Hot = 3,
+    Very_Hot = 4,
+    Extremely_Hot = 5
 }
 
 export type TDifficulty = "Easy" | "Medium" | "Hard";

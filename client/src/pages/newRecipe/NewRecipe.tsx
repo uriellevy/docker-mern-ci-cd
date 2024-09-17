@@ -18,6 +18,16 @@ import classes from "./NewRecipe.module.scss";
 import { CONSTS } from '../../consts/consts';
 import { MdDelete } from "react-icons/md";
 import { useCreateRecipeMutation } from '../../features/recipes/RecipeApi';
+import { SpicyLevel } from '../../types/recipeTyps';
+
+const spicyLevelOptions = [
+    { value: SpicyLevel.None, label: "None" },
+    { value: SpicyLevel.A_little_Spicy, label: "A little Spicy" },
+    { value: SpicyLevel.Spicy, label: "Spicy" },
+    { value: SpicyLevel.Hot, label: "Hot" },
+    { value: SpicyLevel.Very_Hot, label: "Very Hot" },
+    { value: SpicyLevel.Extremely_Hot, label: "Extremely Hot" },
+];
 
 const schema = z.object({
     name: z.string().min(2, { message: 'Min 2 letters required' }),
@@ -82,6 +92,7 @@ const NewRecipe = () => {
     };
 
     const handleSubmit = async (values: any) => {
+        // console.log(values)
         try {
             const result = await createRecipe(values).unwrap();
             console.log('Recipe created successfully:', result);
@@ -148,7 +159,7 @@ const NewRecipe = () => {
                             required
                         />
                     </SimpleGrid>
-                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="xl">
+                    <SimpleGrid cols={{ base: 1, sm: 3 }} mt="xl">
                         <TextInput
                             label="Image url"
                             placeholder="Enter Image URL"
@@ -165,11 +176,20 @@ const NewRecipe = () => {
                             {...form.getInputProps('image.alt')}
                             required
                         />
+                        <Select
+                            comboboxProps={{ withinPortal: true }}
+                            data={spicyLevelOptions.map(option => ({ value: option.value.toString(), label: option.label }))}
+                            placeholder="Spicy Level"
+                            label="Spicy Level"
+                            defaultValue="None"
+                            {...form.getInputProps('spicyLevel')}
+                        />
                     </SimpleGrid>
-                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="xl">
-                    <Switch
-                        label="Vegan recipe"
-                    />
+                    <SimpleGrid cols={{ base: 1, sm: 1 }} mt="xl">
+                        <Switch
+                            label="Vegan"
+                            {...form.getInputProps('isVegan')}
+                        />
                     </SimpleGrid>
                     <Title order={4} mt="xl">
                         Ingredients

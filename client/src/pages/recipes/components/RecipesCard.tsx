@@ -1,17 +1,20 @@
 import { FaHeart } from "react-icons/fa";
 import { AiFillLike } from "react-icons/ai";
+import { FaPepperHot } from "react-icons/fa";
+import { LuVegan } from "react-icons/lu";
 import { Card, Image, Text, Group, Badge, Button, ActionIcon, NavLink } from '@mantine/core';
 import { IRecipe } from '../../../types/recipeTyps';
 import classes from "../Recipes.module.scss"
 import { CONSTS } from "../../../consts/consts";
-import { NavLink as RouterNavLink, Outlet } from 'react-router-dom';
+import { NavLink as RouterNavLink } from 'react-router-dom';
 
 interface IRecipesCardProps {
   recipe: IRecipe
 }
 
 const RecipesCard = ({ recipe }: IRecipesCardProps) => {
-  const { SHOW_DETAILS } = CONSTS.RECIPES;
+  const { SHOW_DETAILS, VEGAN_LABEL } = CONSTS.RECIPES;
+  console.log(recipe)
 
   return (
     <Card withBorder radius="md" p="md" className={classes.card} maw={350}>
@@ -42,9 +45,19 @@ const RecipesCard = ({ recipe }: IRecipesCardProps) => {
         </Group>
       </Card.Section>
 
+      <Card.Section className={classes.section} mt="md">
+        <Group gap={5}>
+          <Badge size="lg" variant="light" className={classes.badge} key={"Vegan"} leftSection={<LuVegan size={15} color="green" />}>
+            {VEGAN_LABEL}
+          </Badge>
+          <Badge size="lg" variant="light" className={classes.badge} key={"SpicyLevel"} leftSection={<LuVegan size={15} color="green" />}>
+          </Badge>
+        </Group>
+      </Card.Section>
+
       <Group mt="xs">
         <Button radius="md" style={{ flex: 1 }}>
-          
+
           <NavLink
             to={`/recipes/${recipe._id}`}
             label={SHOW_DETAILS}

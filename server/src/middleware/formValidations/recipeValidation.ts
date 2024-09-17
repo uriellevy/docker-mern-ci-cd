@@ -117,6 +117,26 @@ export const recipeValidationSchema: Schema = {
         trim: true,
         escape: true,
     },
+    spicyLevel: {
+        isString: {
+            errorMessage: 'Spicy level must be a string',
+        },
+        notEmpty: {
+            errorMessage: 'Spicy level is required',
+        },
+        trim: true,
+        escape: true,
+    },
+    isVegan: {
+        isBoolean: {
+            errorMessage: 'Is vegan must be a boolean',
+        },
+        notEmpty: {
+            errorMessage: 'Is vegan is required',
+        },
+        trim: true,
+        escape: true,
+    },
 };
 
 export const recipeValidation = (req: Request, res: Response, next: NextFunction) => {
