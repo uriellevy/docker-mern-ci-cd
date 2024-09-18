@@ -10,6 +10,7 @@ import {
     Group,
     ActionIcon,
     Switch,
+    Stack,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
@@ -19,6 +20,7 @@ import { CONSTS } from '../../consts/consts';
 import { MdDelete } from "react-icons/md";
 import { useCreateRecipeMutation } from '../../features/recipes/RecipeApi';
 import { SpicyLevel } from '../../types/recipeTyps';
+import { notifications } from '@mantine/notifications';
 
 const spicyLevelOptions = [
     { value: SpicyLevel.None, label: "None" },
@@ -94,8 +96,11 @@ const NewRecipe = () => {
     const handleSubmit = async (values: any) => {
         // console.log(values)
         try {
-            const result = await createRecipe(values).unwrap();
-            console.log('Recipe created successfully:', result);
+            await createRecipe(values).unwrap();
+            notifications.show({
+                title: 'Default notification',
+                message: 'Do not forget to star Mantine on GitHub! 🌟',
+            })
         } catch (error) {
             console.error('Failed to create recipe:', error);
         }
@@ -217,7 +222,7 @@ const NewRecipe = () => {
                         </Group>
                     ))}
 
-                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="xl">
+                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="xl" className={classes.btnWrapper}>
                         <Button
                             mt="md"
                             variant="outline"
@@ -235,39 +240,40 @@ const NewRecipe = () => {
                             <MdDelete />
                         </ActionIcon>
                     </SimpleGrid>
+                    
+                    <Stack>
+                        <Title order={4} mt="xl">
+                            Instructions
+                        </Title>
+                        {form.values.instructions.map((_, index) => (
+                            <Stack key={index} mt="xs" align="flex-start">
+                                <TextInput
+                                    label="Step"
+                                    placeholder="Step"
+                                    {...form.getInputProps(`instructions.${index}`)}
+                                    required
+                                />
+                            </Stack>
+                        ))}
 
-                    <Title order={4} mt="xl">
-                        Instructions
-                    </Title>
-                    {form.values.instructions.map((_, index) => (
-                        <Group key={index} mt="xs" align="center">
-                            <TextInput
-                                label="Step"
-                                placeholder="Step"
-                                {...form.getInputProps(`instructions.${index}`)}
-                                required
-                            />
+                        <Group gap={10}>
+                            <Button
+                                variant="outline"
+                                onClick={addStep}
+                            >
+                                Add Step
+                            </Button>
+                            <ActionIcon
+                                color="red"
+                                onClick={removeStep}
+                                variant="light"
+                                size="lg"
+                                disabled={form.values.instructions.length === 1}
+                            >
+                                <MdDelete />
+                            </ActionIcon>
                         </Group>
-                    ))}
-
-                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="xl">
-                        <Button
-                            mt="md"
-                            variant="outline"
-                            onClick={addStep}
-                        >
-                            Add Step
-                        </Button>
-                        <ActionIcon
-                            color="red"
-                            onClick={removeStep}
-                            variant="light"
-                            size="lg"
-                            disabled={form.values.instructions.length === 1}
-                        >
-                            <MdDelete />
-                        </ActionIcon>
-                    </SimpleGrid>
+                    </Stack>
 
                     <Button type='submit' fullWidth mt="xl">
                         {SUBMIT_TITLE}

@@ -14,7 +14,11 @@ interface IRecipesCardProps {
 
 const RecipesCard = ({ recipe }: IRecipesCardProps) => {
   const { SHOW_DETAILS, VEGAN_LABEL } = CONSTS.RECIPES;
-  console.log(recipe)
+
+  const recipeLevelIcons = Array.from({ length: +recipe.spicyLevel }, (_, i) => (
+    <FaPepperHot key={i} size={15} color="#833030" />
+  ));
+  console.log(recipeLevelIcons)
 
   return (
     <Card withBorder radius="md" p="md" className={classes.card} maw={350}>
@@ -47,11 +51,10 @@ const RecipesCard = ({ recipe }: IRecipesCardProps) => {
 
       <Card.Section className={classes.section} mt="md">
         <Group gap={5}>
-          <Badge size="lg" variant="light" className={classes.badge} key={"Vegan"} leftSection={<LuVegan size={15} color="green" />}>
+          {recipe.isVegan && <Badge size="lg" variant="light" className={classes.badge} key={"Vegan"} leftSection={<LuVegan size={15} color="green" /> }>
             {VEGAN_LABEL}
-          </Badge>
-          <Badge size="lg" variant="light" className={classes.badge} key={"SpicyLevel"} leftSection={<LuVegan size={15} color="green" />}>
-          </Badge>
+          </Badge>}
+          {+recipe.spicyLevel && <Badge size="lg" variant="light" className={classes.badge} key={"SpicyLevel"} leftSection={recipeLevelIcons}/>}
         </Group>
       </Card.Section>
 
