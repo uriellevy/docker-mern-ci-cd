@@ -196,51 +196,53 @@ const NewRecipe = () => {
                             {...form.getInputProps('isVegan')}
                         />
                     </SimpleGrid>
-                    <Title order={4} mt="xl">
-                        Ingredients
-                    </Title>
-                    {form.values.ingredients.map((_, index) => (
-                        <Group key={index} mt="xs" align="center">
-                            <NumberInput
-                                label="Amount"
-                                placeholder="Value"
-                                {...form.getInputProps(`ingredients.${index}.amount.value`)}
-                                required
-                            />
-                            <TextInput
-                                label="Units"
-                                placeholder="Units"
-                                {...form.getInputProps(`ingredients.${index}.amount.units`)}
-                                required
-                            />
-                            <TextInput
-                                label="Ingredient"
-                                placeholder="Ingredient Name"
-                                {...form.getInputProps(`ingredients.${index}.ingredient`)}
-                                required
-                            />
-                        </Group>
-                    ))}
 
-                    <SimpleGrid cols={{ base: 1, sm: 2 }} mt="xl" className={classes.btnWrapper}>
-                        <Button
-                            mt="md"
-                            variant="outline"
-                            onClick={addIngredient}
-                        >
-                            Add Ingredient
-                        </Button>
-                        <ActionIcon
-                            color="red"
-                            onClick={removeIngredient}
-                            variant="light"
-                            size="lg"
-                            disabled={form.values.ingredients.length === 1}
-                        >
-                            <MdDelete />
-                        </ActionIcon>
-                    </SimpleGrid>
-                    
+                    <Stack>
+                        <Title order={4} mt="xl">
+                            Ingredients
+                        </Title>
+                        {form.values.ingredients.map((_, index) => (
+                            <Group key={index} mt="xs" align="center" >
+                                <NumberInput
+                                    label="Amount"
+                                    placeholder="Value"
+                                    {...form.getInputProps(`ingredients.${index}.amount.value`)}
+                                    required
+                                />
+                                <TextInput
+                                    label="Units"
+                                    placeholder="Units"
+                                    {...form.getInputProps(`ingredients.${index}.amount.units`)}
+                                    required
+                                />
+                                <TextInput
+                                    label="Ingredient"
+                                    placeholder="Ingredient Name"
+                                    {...form.getInputProps(`ingredients.${index}.ingredient`)}
+                                    required
+                                />
+                            </Group>
+                        ))}
+
+                        <Group gap={10} className={classes.btnWrapper}>
+                            <Button
+                                variant="outline"
+                                onClick={addIngredient}
+                            >
+                                Add Ingredient
+                            </Button>
+                            <ActionIcon
+                                color="red"
+                                onClick={removeIngredient}
+                                variant="light"
+                                size="lg"
+                                disabled={form.values.ingredients.length === 1}
+                            >
+                                <MdDelete />
+                            </ActionIcon>
+                        </Group>
+                    </Stack>
+
                     <Stack>
                         <Title order={4} mt="xl">
                             Instructions

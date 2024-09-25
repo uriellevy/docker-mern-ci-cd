@@ -12,9 +12,11 @@ import {
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { z } from 'zod';
-import { NavLink as RouterNavLink } from 'react-router-dom';
+import { NavLink as RouterNavLink, useNavigate } from 'react-router-dom';
 import classes from "./Login.module.scss";
 import { CONSTS } from '../../consts/consts';
+import { useLoginUserMutation } from '../../features/users/UserApi';
+import { notifications } from '@mantine/notifications';
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email" }),
@@ -29,15 +31,26 @@ const schema = z.object({
 
 const Login = () => {
   const { TITLE, NO_PASSWORD_YET, CREATE_ACCOUNT, SUBMIT_TITLE } = CONSTS.LOGIN;
+  const [loginUser/* , { isLoading, isError, isSuccess } */] = useLoginUserMutation();
+  const navigate = useNavigate();
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: { email: '', password: "" },
     validate: zodResolver(schema),
   });
 
-  const handleSubmit = (values: any) => {
-    // form.validate();
-    console.log(values);
+  const handleSubmit = async (values: any) => {
+    try {
+      const res = await loginUser(values);
+      console.log(res)
+      // navigate("/recipes");
+      notifications.show({
+        title: res && res.data && res.data.message,
+        message: 'Do not forget to star Mantine on GitHub! 🌟',
+      })
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -62,7 +75,7 @@ const Login = () => {
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
           <TextInput
             label="Email"
-            placeholder="you@mantine.dev"
+            placeholder="you@gmail.com"
             {...form.getInputProps('email')}
             required
           />

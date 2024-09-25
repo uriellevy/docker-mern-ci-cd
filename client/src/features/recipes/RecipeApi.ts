@@ -14,7 +14,7 @@ export const recipeApi = createApi({
       query: (id) => `/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'Recipe', id }],
     }),
-    createRecipe: builder.mutation<IRecipesResponse, Partial<IRecipesResponse>>({
+    createRecipe: builder.mutation<IRecipe, Partial<IRecipe>>({
       query: (recipe) => ({
         url: '/',
         method: 'POST',

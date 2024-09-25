@@ -12,13 +12,14 @@ import { zodResolver } from 'mantine-form-zod-resolver';
 import { z } from 'zod';
 import { CONSTS } from '../../consts/consts';
 import classes from "./Signup.module.scss";
+import { useCreateUserMutation } from '../../features/users/UserApi';
 
 const schema = z.object({
   name: z.object({
-    firstName: z
+    first: z
       .string()
       .min(2, { message: 'Name should have at least 2 letters' }),
-    lastName: z
+    last: z
       .string()
       .min(2, { message: 'Name should have at least 2 letters' }),
   }),
@@ -42,15 +43,17 @@ const schema = z.object({
 
 const Signup = () => {
   const { TITLE, SUBMIT_TITLE } = CONSTS.SIGNUP;
+  const [createUser/* , { isLoading, isError, isSuccess } */] = useCreateUserMutation();
   const form = useForm({
     mode: 'uncontrolled',
-    initialValues: { name: { firstName: "", lastName: "" }, image: { url: "", alt: "" }, email: '', password: "", confirmPassword:""},
+    initialValues: { name: { firstName: "", last: "" }, image: { url: "", alt: "" }, email: '', password: "", confirmPassword:""},
     validate: zodResolver(schema),
   });
 
   const handleSubmit = (values: any) => {
     form.validate();
     console.log(values);
+    createUser(values)
   };
 
   return (
@@ -64,18 +67,18 @@ const Signup = () => {
             <TextInput
               label="First Name"
               placeholder="Your first name"
-              name="firstName"
+              name="first"
               variant="filled"
               required
-              {...form.getInputProps('name.firstName')}
+              {...form.getInputProps('name.first')}
             />
             <TextInput
               label="Last Name"
               placeholder="Your last name"
-              name="lastName"
+              name="last"
               variant="filled"
               required
-              {...form.getInputProps('name.lastName')}
+              {...form.getInputProps('name.last')}
             />
           </SimpleGrid>
           <SimpleGrid cols={{ base: 1, sm: 2 }} mt="xl">
