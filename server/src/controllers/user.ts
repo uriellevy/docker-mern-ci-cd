@@ -34,6 +34,14 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
         if (!match(password, user.password)) return next(new AppError('Incorrect password', 400));
 
         const token = generateToken({ _id: user._id, role: user.role })
+
+        res.cookie('authToken', token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'strict',
+            maxAge: 24 * 60 * 60 * 1000,
+        });
+
         res.status(200).json({ message: "user logged in successfully", token });
     } catch (err) {
         next(err);

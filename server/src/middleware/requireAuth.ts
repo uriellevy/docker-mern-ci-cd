@@ -4,11 +4,15 @@ import { verifyToken } from '../utils/jwt';
 import { AuthenticatedRequest, IJWTPayload } from '../interfaces/user';
 
 export const requireAdminAuth = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const {authorization} = req.headers;
+    // const {authorization} = req.headers;
 
-    if(!authorization) return next(new AppError("authorization token is required", 401));
+    // if(!authorization) return next(new AppError("authorization token is required", 401));
 
-    const token = authorization.split(" ")[1];
+    // const token = authorization.split(" ")[1];
+
+    const token = req.cookies.authToken;
+
+    if(!token) return next(new AppError("authorization token is required", 403));
 
     try {
         const {role} = verifyToken(token) as IJWTPayload;
