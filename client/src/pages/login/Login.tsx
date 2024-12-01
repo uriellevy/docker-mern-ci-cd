@@ -42,11 +42,15 @@ const Login = () => {
   const handleSubmit = async (values: any) => {
     try {
       const res = await loginUser(values);
-      console.log(res)
-      // navigate("/recipes");
+      // @ts-ignore
+      if (!res.error) {
+        navigate("/recipes");
+      }
       notifications.show({
-        title: res && res.data && res.data.message,
-        message: 'Do not forget to star Mantine on GitHub! 🌟',
+      // @ts-ignore
+        title: res.data ? res.data.message : res.error.data.message,
+        message: '',
+        color: res.error ? "red" : "green",
       })
     } catch (error) {
       console.log(error)

@@ -18,7 +18,6 @@ const RecipesCard = ({ recipe }: IRecipesCardProps) => {
   const recipeLevelIcons = Array.from({ length: +recipe.spicyLevel }, (_, i) => (
     <FaPepperHot key={i} size={15} color="#833030" />
   ));
-  console.log(recipeLevelIcons)
 
   return (
     <Card withBorder radius="md" p="md" className={classes.card} maw={350}>

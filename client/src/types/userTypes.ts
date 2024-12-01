@@ -7,8 +7,6 @@ export interface IUserInput extends IUserAuth {
         url: string
         alt: string
     }
-    // email: string;
-    // password: string;
     confirmPassword: string
     role?:UserRole
 }

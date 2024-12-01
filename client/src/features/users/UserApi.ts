@@ -3,7 +3,7 @@ import { IUser, IUserAuth, IUsersResponse } from '../../types/userTypes';
 
 export const userApi = createApi({
     reducerPath: 'userApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/users' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/users',credentials: 'include', }),
     tagTypes: ['User'],
     endpoints: (builder) => ({
         getUsers: builder.query<IUsersResponse, void>({
