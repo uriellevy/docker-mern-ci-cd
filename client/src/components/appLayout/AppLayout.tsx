@@ -9,10 +9,12 @@ import { SiFoodpanda } from "react-icons/si";
 import classes from "./AppLayout.module.scss"
 import { UserButton } from '../userButton.tsx/UserButton';
 import { CONSTS } from '../../consts/consts';
+import { useLogoutUserMutation } from '../../features/users/UserApi';
 
 const AppLayout = () => {
     const { toggleColorScheme } = useMantineColorScheme();
     const [opened, { toggle, close }] = useDisclosure();
+    const [logoutUser/* , { isLoading, isError, isSuccess } */] = useLogoutUserMutation();
 
     const theme = useMantineTheme();
 
@@ -118,6 +120,7 @@ const AppLayout = () => {
                     <NavLink
                         label="Logout"
                         leftSection={<BiSolidExit />}
+                        onClick={() => logoutUser()}
                     />
                     <div className={classes.userProfile}>
                         <UserButton />

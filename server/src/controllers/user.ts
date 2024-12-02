@@ -48,6 +48,21 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
     }
 };
 
+export const logout = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.clearCookie("authToken", {
+            httpOnly: true,
+            // secure: false,
+            sameSite: 'strict',
+            // maxAge: 24 * 60 * 60 * 1000,
+        })
+            .status(200)
+            .json({ message: "Successfully logged out" });
+    } catch (err) {
+        next(err);
+    }
+}
+
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -74,7 +89,7 @@ export const updateUserById = async (req: Request, res: Response, next: NextFunc
     const { id } = req.params;
     try {
         const updatedUser = await updateUser(id, req.body);
-        if (updatedUser.matchedCount === 0)  return next(new AppError('User not found', 404));
+        if (updatedUser.matchedCount === 0) return next(new AppError('User not found', 404));
         res.status(200).json({ message: 'Todo updated successfully' });
     } catch (err) {
         next(err);
