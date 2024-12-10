@@ -36,7 +36,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
         const token = generateToken({ _id: user._id, role: user.role })
 
         res.cookie('authToken', token, {
-            httpOnly: true,
+            httpOnly: false,
             secure: false,
             sameSite: 'strict',
             maxAge: 24 * 60 * 60 * 1000,
