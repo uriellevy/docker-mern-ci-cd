@@ -42,7 +42,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
             maxAge: 24 * 60 * 60 * 1000,
         });
 
-        res.status(200).json({ message: "user logged in successfully", token });
+        res.status(200).json({ message: "user logged in successfully"/* , token */ });
     } catch (err) {
         next(err);
     }

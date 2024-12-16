@@ -7,8 +7,8 @@ const child = <Skeleton height={140} radius="md" animate={true} />
 
 const Home = () => {
   const recipes = useSelector((state: RootState) => state.recipes)
-  // console.log(recipes)
   // const [authToken, setAuthToken] = useState("");
+  // console.log(authToken)
 
   // useEffect(() => {
   //   const token = Cookies.get('authToken');

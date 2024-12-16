@@ -17,6 +17,9 @@ import classes from "./Login.module.scss";
 import { CONSTS } from '../../consts/consts';
 import { useLoginUserMutation } from '../../features/users/UserApi';
 import { notifications } from '@mantine/notifications';
+import { useDispatch } from 'react-redux';
+import { setAuthToken } from '../../features/users/authSlice';
+import Cookies from 'js-cookie';
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email" }),
@@ -33,6 +36,8 @@ const Login = () => {
   const { TITLE, NO_PASSWORD_YET, CREATE_ACCOUNT, SUBMIT_TITLE } = CONSTS.LOGIN;
   const [loginUser/* , { isLoading, isError, isSuccess } */] = useLoginUserMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: { email: '', password: "" },
@@ -44,6 +49,8 @@ const Login = () => {
       const res = await loginUser(values);
       // @ts-ignore
       if (!res.error) {
+        const authToken = Cookies.get('authToken');
+        authToken && dispatch(setAuthToken(authToken));
         navigate("/recipes");
       }
       notifications.show({
