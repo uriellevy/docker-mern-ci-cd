@@ -1,6 +1,6 @@
 import { AppShell, Burger, Container, NavLink, Switch, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks';
-import { NavLink as RouterNavLink, Outlet } from 'react-router-dom';
+import { NavLink as RouterNavLink, Outlet, useNavigate } from 'react-router-dom';
 import { FaHome } from "react-icons/fa";
 import { MdSunny, MdOutlineStarPurple500, MdFastfood, MdOutlineDoorSliding, MdOutlineContactPage, MdOutlineAddCircleOutline } from "react-icons/md";
 import { FaMoon, FaUsers } from "react-icons/fa";
@@ -10,13 +10,35 @@ import classes from "./AppLayout.module.scss"
 import { UserButton } from '../userButton.tsx/UserButton';
 import { CONSTS } from '../../consts/consts';
 import { useLogoutUserMutation } from '../../features/users/UserApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { clearAuthToken } from '../../features/users/authSlice';
+import { notifications } from '@mantine/notifications';
 
 const AppLayout = () => {
     const { toggleColorScheme } = useMantineColorScheme();
     const [opened, { toggle, close }] = useDisclosure();
     const [logoutUser/* , { isLoading, isError, isSuccess } */] = useLogoutUserMutation();
-
+    const token = useSelector((state: RootState) => state.auth.token);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const theme = useMantineTheme();
+
+    const logoutHandler = async () => {
+        try {
+            const res = await logoutUser();
+            dispatch(clearAuthToken());
+            navigate("/login");
+            notifications.show({
+                // @ts-ignore
+                title: res.data ? res.data.message : res.error.data.message,
+                message: '',
+                color: res.error ? "red" : "green",
+            })
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    }
 
     const sunIcon = (
         <MdSunny
@@ -75,58 +97,64 @@ const AppLayout = () => {
                         onClick={close}
                         end
                     />
-                    <NavLink
-                        to="/login"
-                        label="Login"
-                        leftSection={<MdOutlineDoorSliding />}
-                        component={RouterNavLink}
-                        onClick={close}
-                    />
-                    <NavLink
-                        to="/signup"
-                        label="Signup"
-                        leftSection={<MdOutlineContactPage />}
-                        component={RouterNavLink}
-                        onClick={close}
-                    />
-                    <NavLink
-                        to="/myRecipes"
-                        label="My Recipes"
-                        leftSection={<SiFoodpanda />}
-                        component={RouterNavLink}
-                        onClick={close}
-                    />
-                    <NavLink
-                        to="/favorites"
-                        label="Favorites"
-                        leftSection={<MdOutlineStarPurple500 />}
-                        component={RouterNavLink}
-                        onClick={close}
-                    />
-                    <NavLink
-                        to="/users"
-                        label="Users"
-                        leftSection={<FaUsers />}
-                        component={RouterNavLink}
-                        onClick={close}
-                    />
-                    <NavLink
-                        to="/newRecipe"
-                        label="New Recipe"
-                        leftSection={<MdOutlineAddCircleOutline />}
-                        component={RouterNavLink}
-                        onClick={close}
-                    />
-                    <NavLink
-                        label="Logout"
-                        leftSection={<BiSolidExit />}
-                        onClick={() => logoutUser()}
-                    />
-                    <div className={classes.userProfile}>
-                        <UserButton />
-                    </div>
+                    {token ?
+                        <>
+                            <NavLink
+                                to="/myRecipes"
+                                label="My Recipes"
+                                leftSection={<SiFoodpanda />}
+                                component={RouterNavLink}
+                                onClick={close}
+                            />
+                            <NavLink
+                                to="/favorites"
+                                label="Favorites"
+                                leftSection={<MdOutlineStarPurple500 />}
+                                component={RouterNavLink}
+                                onClick={close}
+                            />
+                            <NavLink
+                                to="/users"
+                                label="Users"
+                                leftSection={<FaUsers />}
+                                component={RouterNavLink}
+                                onClick={close}
+                            />
+                            <NavLink
+                                to="/newRecipe"
+                                label="New Recipe"
+                                leftSection={<MdOutlineAddCircleOutline />}
+                                component={RouterNavLink}
+                                onClick={close}
+                            />
+                            <NavLink
+                                label="Logout"
+                                leftSection={<BiSolidExit />}
+                                onClick={logoutHandler}
+                            />
+                            <div className={classes.userProfile}>
+                                <UserButton />
+                            </div>
+                        </>
+                        :
+                        <>
+                            <NavLink
+                                to="/login"
+                                label="Login"
+                                leftSection={<MdOutlineDoorSliding />}
+                                component={RouterNavLink}
+                                onClick={close}
+                            />
+                            <NavLink
+                                to="/signup"
+                                label="Signup"
+                                leftSection={<MdOutlineContactPage />}
+                                component={RouterNavLink}
+                                onClick={close}
+                            />
+                        </>
+                    }
                 </AppShell.Navbar>
-
                 <AppShell.Main><Outlet /></AppShell.Main>
             </AppShell>
 

@@ -60,7 +60,7 @@ const Login = () => {
         color: res.error ? "red" : "green",
       })
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   };
 

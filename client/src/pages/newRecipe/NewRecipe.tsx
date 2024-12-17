@@ -21,6 +21,7 @@ import { MdDelete } from "react-icons/md";
 import { useCreateRecipeMutation } from '../../features/recipes/RecipeApi';
 import { SpicyLevel } from '../../types/recipeTyps';
 import { notifications } from '@mantine/notifications';
+import { useNavigate } from 'react-router-dom';
 
 const spicyLevelOptions = [
     { value: SpicyLevel.None, label: "None" },
@@ -57,6 +58,8 @@ const schema = z.object({
 const NewRecipe = () => {
     const { TITLE, SUBMIT_TITLE } = CONSTS.NEW_RECIPE;
     const [createRecipe/* , { isLoading, isError, isSuccess } */] = useCreateRecipeMutation();
+    const navigate = useNavigate();
+
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
@@ -94,12 +97,14 @@ const NewRecipe = () => {
     };
 
     const handleSubmit = async (values: any) => {
-        // console.log(values)
         try {
-            await createRecipe(values).unwrap();
+            const res = await createRecipe(values);
+            if(!res.error) navigate("/recipes");
             notifications.show({
-                title: 'Default notification',
-                message: 'Do not forget to star Mantine on GitHub! 🌟',
+                //@ts-ignore
+                title: res.data ? res.data.message : res.error.data.message,
+                message: '',
+                color: res.error ? "red" : "green",
             })
         } catch (error) {
             console.error('Failed to create recipe:', error);

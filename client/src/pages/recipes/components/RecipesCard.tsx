@@ -7,6 +7,8 @@ import { IRecipe } from '../../../types/recipeTyps';
 import classes from "../Recipes.module.scss"
 import { CONSTS } from "../../../consts/consts";
 import { NavLink as RouterNavLink } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 interface IRecipesCardProps {
   recipe: IRecipe
@@ -14,13 +16,14 @@ interface IRecipesCardProps {
 
 const RecipesCard = ({ recipe }: IRecipesCardProps) => {
   const { SHOW_DETAILS, VEGAN_LABEL } = CONSTS.RECIPES;
+  const token = useSelector((state: RootState) => state.auth.token);
 
   const recipeLevelIcons = Array.from({ length: +recipe.spicyLevel }, (_, i) => (
     <FaPepperHot key={i} size={15} color="#833030" />
   ));
 
   return (
-    <Card withBorder radius="md" p="md" className={classes.card} maw={350}>
+    <Card withBorder radius="md" p="md" className={classes.card} maw={350} style={{ height: 460, justifyContent: "space-between" }}>
       <Card.Section>
         <Image src={recipe.image.url} alt={recipe.image.alt} height={180} />
       </Card.Section>
@@ -38,39 +41,40 @@ const RecipesCard = ({ recipe }: IRecipesCardProps) => {
           {recipe.difficulty}
         </Text>
       </Card.Section>
+      {token &&
+        <Card.Section className={classes.section} mt="md">
+          <Group gap={5}>
+            <AiFillLike size={25} />
+            <Text fz="lg" fw={400}>
+              {recipe.likes.length}
+            </Text>
+          </Group>
+        </Card.Section>}
 
       <Card.Section className={classes.section} mt="md">
         <Group gap={5}>
-          <AiFillLike size={25} />
-          <Text fz="lg" fw={400}>
-            {recipe.likes.length}
-          </Text>
-        </Group>
-      </Card.Section>
-
-      <Card.Section className={classes.section} mt="md">
-        <Group gap={5}>
-          {recipe.isVegan && <Badge size="lg" variant="light" className={classes.badge} key={"Vegan"} leftSection={<LuVegan size={15} color="green" /> }>
+          {recipe.isVegan && <Badge size="lg" variant="light" className={classes.badge} key={"Vegan"} leftSection={<LuVegan size={15} color="green" />}>
             {VEGAN_LABEL}
           </Badge>}
-          {+recipe.spicyLevel && <Badge size="lg" variant="light" className={classes.badge} key={"SpicyLevel"} leftSection={recipeLevelIcons}/>}
+          {+recipe.spicyLevel && <Badge size="lg" variant="light" className={classes.badge} key={"SpicyLevel"} leftSection={recipeLevelIcons} />}
         </Group>
       </Card.Section>
+      {token &&
+        <Group mt="xs">
+          <Button radius="md" style={{ flex: 1 }}>
 
-      <Group mt="xs">
-        <Button radius="md" style={{ flex: 1 }}>
-
-          <NavLink
-            to={`/recipes/${recipe._id}`}
-            label={SHOW_DETAILS}
-            component={RouterNavLink}
-            onClick={close}
-          />
-        </Button>
-        <ActionIcon variant="default" radius="md" size={36}>
-          <FaHeart className={classes.like} />
-        </ActionIcon>
-      </Group>
+            <NavLink
+              to={`/recipes/${recipe._id}`}
+              label={SHOW_DETAILS}
+              component={RouterNavLink}
+              onClick={close}
+            />
+          </Button>
+          <ActionIcon variant="default" radius="md" size={36}>
+            <FaHeart className={classes.like} />
+          </ActionIcon>
+        </Group>
+      }
     </Card>
   );
 }

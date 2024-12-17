@@ -1,9 +1,23 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IRecipe, IRecipeResponse, IRecipesResponse } from '../../types/recipeTyps';
+import { RootState } from '../../store/store';
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: 'http://localhost:8080/api/recipes',
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as RootState).auth.token;
+
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    return headers;
+  },
+});
 
 export const recipeApi = createApi({
   reducerPath: 'recipeApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/recipes' }),
+  baseQuery,
   tagTypes: ['Recipe'],
   endpoints: (builder) => ({
     getRecipes: builder.query<IRecipesResponse, void>({
