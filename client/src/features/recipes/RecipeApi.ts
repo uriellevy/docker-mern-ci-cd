@@ -24,6 +24,10 @@ export const recipeApi = createApi({
       query: () => '/',
       providesTags: ['Recipe'],
     }),
+    getMyRecipes: builder.query<IRecipesResponse, void>({
+      query: () => '/myRecipes',
+      providesTags: ['Recipe'],
+    }),
     getRecipe: builder.query<IRecipeResponse, string>({
       query: (id) => `/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'Recipe', id }],
@@ -57,6 +61,7 @@ export const recipeApi = createApi({
 export const {
   useGetRecipesQuery,
   useGetRecipeQuery,
+  useGetMyRecipesQuery,
   useCreateRecipeMutation,
   useUpdateRecipeMutation,
   useDeleteRecipeMutation,

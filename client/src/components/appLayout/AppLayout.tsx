@@ -20,6 +20,7 @@ const AppLayout = () => {
     const [opened, { toggle, close }] = useDisclosure();
     const [logoutUser/* , { isLoading, isError, isSuccess } */] = useLogoutUserMutation();
     const token = useSelector((state: RootState) => state.auth.token);
+    const userRole = useSelector((state: RootState) => state.auth.user?.role);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const theme = useMantineTheme();
@@ -113,13 +114,15 @@ const AppLayout = () => {
                                 component={RouterNavLink}
                                 onClick={close}
                             />
-                            <NavLink
-                                to="/users"
-                                label="Users"
-                                leftSection={<FaUsers />}
-                                component={RouterNavLink}
-                                onClick={close}
-                            />
+                            {userRole && userRole === "admin" &&
+                                <NavLink
+                                    to="/users"
+                                    label="Users"
+                                    leftSection={<FaUsers />}
+                                    component={RouterNavLink}
+                                    onClick={close}
+                                />
+                            }
                             <NavLink
                                 to="/newRecipe"
                                 label="New Recipe"
