@@ -45,6 +45,8 @@ const Login = () => {
   });
 
   const handleSubmit = async (values: any) => {
+    form.validate();
+    
     try {
       const res = await loginUser(values);
       // @ts-ignore

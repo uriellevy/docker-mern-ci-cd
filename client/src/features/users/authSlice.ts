@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { jwtDecode } from 'jwt-decode';
 import { UserRole } from '../../types/userTypes';
 
-interface UserPayload {
+export interface UserPayload {
   _id: string;
   role: UserRole;
 }

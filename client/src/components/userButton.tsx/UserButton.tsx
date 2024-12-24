@@ -1,25 +1,34 @@
-import { UnstyledButton, Group, Avatar, Text } from '@mantine/core';
+import { UnstyledButton, Group, Avatar, Text, Loader } from '@mantine/core';
 import classes from './UserButton.module.scss';
+import { UserPayload } from '../../features/users/authSlice';
+import { useGetUsersByIdQuery } from '../../features/users/UserApi';
 
-export function UserButton() {
+interface UserButtonProps {
+  user: UserPayload
+}
+
+export function UserButton({ user }: UserButtonProps) {
+  const { data: userData, isLoading } = useGetUsersByIdQuery(user._id);
+
   return (
     <UnstyledButton className={classes.user}>
-      <Group>
-        <Avatar
-          src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png"
-          radius="xl"
-        />
-
-        <div style={{ flex: 1 }}>
-          <Text size="sm" fw={500}>
-            Harriette Spoonlicker
-          </Text>
-
-          <Text c="dimmed" size="xs">
-            hspoonlicker@outlook.com
-          </Text>
-        </div>
-      </Group>
+      {isLoading ? <Loader color="blue" size="xl" />
+        :
+        <Group>
+          <Avatar
+            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png"
+            radius="xl"
+          />
+          <div style={{ flex: 1 }}>
+            <Text size="sm" fw={500}>
+              {`${userData?.user.name.first} ${userData?.user.name.last}`}
+            </Text>
+            <Text c="dimmed" size="xs">
+              {userData?.user.email}
+            </Text>
+          </div>
+        </Group>
+      }
     </UnstyledButton>
   );
 }

@@ -20,7 +20,7 @@ const AppLayout = () => {
     const [opened, { toggle, close }] = useDisclosure();
     const [logoutUser/* , { isLoading, isError, isSuccess } */] = useLogoutUserMutation();
     const token = useSelector((state: RootState) => state.auth.token);
-    const userRole = useSelector((state: RootState) => state.auth.user?.role);
+    const user = useSelector((state: RootState) => state.auth.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const theme = useMantineTheme();
@@ -114,7 +114,7 @@ const AppLayout = () => {
                                 component={RouterNavLink}
                                 onClick={close}
                             />
-                            {userRole && userRole === "admin" &&
+                            {user?.role && user.role === "admin" &&
                                 <NavLink
                                     to="/users"
                                     label="Users"
@@ -135,9 +135,9 @@ const AppLayout = () => {
                                 leftSection={<BiSolidExit />}
                                 onClick={logoutHandler}
                             />
-                            <div className={classes.userProfile}>
-                                <UserButton />
-                            </div>
+                            {user &&<div className={classes.userProfile}>
+                                <UserButton user={user}/>
+                            </div>}
                         </>
                         :
                         <>

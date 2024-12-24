@@ -13,6 +13,8 @@ import { z } from 'zod';
 import { CONSTS } from '../../consts/consts';
 import classes from "./Signup.module.scss";
 import { useCreateUserMutation } from '../../features/users/UserApi';
+import { useNavigate } from 'react-router-dom';
+import { notifications } from '@mantine/notifications';
 
 const schema = z.object({
   name: z.object({
@@ -35,7 +37,7 @@ const schema = z.object({
     .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
     .regex(/[0-9]/, { message: "Password must contain at least one number" })
     .regex(/[^a-zA-Z0-9]/, { message: "Password must contain at least one symbol" }),
-    confirmPassword: z.string(),
+  confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ['confirmPassword'], // Specify the path for the error message
@@ -44,16 +46,30 @@ const schema = z.object({
 const Signup = () => {
   const { TITLE, SUBMIT_TITLE } = CONSTS.SIGNUP;
   const [createUser/* , { isLoading, isError, isSuccess } */] = useCreateUserMutation();
+  const navigate = useNavigate();
   const form = useForm({
     mode: 'uncontrolled',
-    initialValues: { name: { firstName: "", last: "" }, image: { url: "", alt: "" }, email: '', password: "", confirmPassword:""},
+    initialValues: { name: { firstName: "", last: "" }, image: { url: "", alt: "" }, email: '', password: "", confirmPassword: "" },
     validate: zodResolver(schema),
   });
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = async (values: any) => {
     form.validate();
-    console.log(values);
-    createUser(values)
+
+    try {
+      const res = await createUser(values);
+      if (!res.error) {
+        navigate("/login");
+      }
+      notifications.show({
+        // @ts-ignore
+          title: res.data ? res.data.message : res.error.data.message,
+          message: '',
+          color: res.error ? "red" : "green",
+        })
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   return (

@@ -23,7 +23,12 @@ export interface IUserAuth {
 }
 
 export interface IUsersResponse {
-    recipes: IUser[]
+    users: IUser[]
+    message: string
+}
+
+export interface IUserResponse {
+    user: IUser
     message: string
 }
 
