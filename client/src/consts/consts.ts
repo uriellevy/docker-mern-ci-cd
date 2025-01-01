@@ -22,6 +22,7 @@ export const CONSTS = {
         COOK_TIME: "Cook Time",
         PREP_TIME: "Prep Time",
         SERVINGS: "Servings",
-        DIFFICULTY_LEVEL: "Difficulty"
+        DIFFICULTY_LEVEL: "Difficulty",
+        STEPS: "Steps",
     },
 }
