@@ -12,6 +12,11 @@ export const getUserRecipes = async (userId: string): Promise<IRecipe[]> => {
     return await db.collection<IRecipe>('recipes').find({ userId }).toArray();
 };
 
+export const getLikedUserRecipe = async (userId: string): Promise<IRecipe[]> => {
+    const db = getDB();
+    return await db.collection<IRecipe>('recipes').find({ likes: userId }).toArray();
+};
+
 export const getRecipe = async (id: string): Promise<IRecipe | null> => {
     const db = getDB();
     return await db.collection<IRecipe>('recipes').findOne({ _id: new ObjectId(id) });

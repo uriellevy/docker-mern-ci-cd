@@ -1,16 +1,10 @@
 import { useGetRecipesQuery } from '../../features/recipes/RecipeApi';
-import { RootState } from '../../store/store';
-// import { IError } from '../../types/global';
 import RecipesCard from './components/RecipesCard'
 import classes from "./Recipes.module.scss";
 import { Loader } from '@mantine/core';
-// import { Notification } from '@mantine/core';
-import { useSelector } from 'react-redux';
 
 const Recipes = () => {
   const { data: response, isLoading, error } = useGetRecipesQuery();
-  const token = useSelector((state: RootState) => state.auth.token)
-  // const typedError = error as IError | undefined;
 
   return (
     <div className={classes.recipesContainer}>

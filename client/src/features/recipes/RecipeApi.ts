@@ -32,6 +32,10 @@ export const recipeApi = createApi({
       query: (id) => `/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'Recipe', id }],
     }),
+    getLikedRecipe: builder.query<IRecipesResponse, void>({
+      query: () => "/favorites",
+      providesTags: ['Recipe'],
+    }),
     createRecipe: builder.mutation<IRecipe, Partial<IRecipe>>({
       query: (recipe) => ({
         url: '/',
@@ -55,6 +59,13 @@ export const recipeApi = createApi({
       }),
       invalidatesTags: (_result, _error, id) => [{ type: 'Recipe', id }],
     }),
+    toggleRecipeLike: builder.mutation<any, string>({
+      query: (id) => ({
+        url: `/${id}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: ["Recipe"],
+    }),
   }),
 });
 
@@ -62,7 +73,9 @@ export const {
   useGetRecipesQuery,
   useGetRecipeQuery,
   useGetMyRecipesQuery,
+  useGetLikedRecipeQuery,
   useCreateRecipeMutation,
   useUpdateRecipeMutation,
   useDeleteRecipeMutation,
+  useToggleRecipeLikeMutation,
 } = recipeApi;

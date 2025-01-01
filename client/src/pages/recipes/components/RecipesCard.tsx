@@ -9,6 +9,7 @@ import { CONSTS } from "../../../consts/consts";
 import { NavLink as RouterNavLink } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import { useToggleRecipeLikeMutation } from "../../../features/recipes/RecipeApi";
 
 interface IRecipesCardProps {
   recipe: IRecipe
@@ -17,6 +18,9 @@ interface IRecipesCardProps {
 const RecipesCard = ({ recipe }: IRecipesCardProps) => {
   const { SHOW_DETAILS, VEGAN_LABEL } = CONSTS.RECIPES;
   const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const [toggleRecipeLike] = useToggleRecipeLikeMutation();
+  const isCardLiked = token && user && recipe.likes.includes(user._id);
 
   const recipeLevelIcons = Array.from({ length: +recipe.spicyLevel }, (_, i) => (
     <FaPepperHot key={i} size={15} color="#833030" />
@@ -62,16 +66,24 @@ const RecipesCard = ({ recipe }: IRecipesCardProps) => {
       {token &&
         <Group mt="xs">
           <Button radius="md" style={{ flex: 1 }}>
-
             <NavLink
+            className="nav-link"
               to={`/recipes/${recipe._id}`}
               label={SHOW_DETAILS}
               component={RouterNavLink}
               onClick={close}
+              styles={{
+                root: {
+                  backgroundColor: "transparent",
+                },
+              }}
             />
           </Button>
           <ActionIcon variant="default" radius="md" size={36}>
-            <FaHeart className={classes.like} />
+            <FaHeart
+              className={classes.like}
+              onClick={() => toggleRecipeLike(recipe._id)}
+              color={`${isCardLiked ? "rgb(131, 48, 48)" : "grey"}`} />
           </ActionIcon>
         </Group>
       }

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../exceptions/appError';
 import { AuthenticatedRequest } from '../interfaces/user';
-import { createNewRecipe, deleteRecipe, getCuisine, getRecipe, getRecipes, getUserRecipes, toggleLike, updateRecipe } from '../models/recipe';
+import { createNewRecipe, deleteRecipe, getCuisine, getLikedUserRecipe, getRecipe, getRecipes, getUserRecipes, toggleLike, updateRecipe } from '../models/recipe';
 import { IFilters, ISortOptions } from '../interfaces/recipe';
 
 export const createRecipe = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
@@ -40,6 +40,17 @@ export const getMyRecipes = async (req: AuthenticatedRequest, res: Response, nex
         next(err);
     }
 };
+
+export const getLikedRecipes = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+    const userId = req.userId;
+    try {
+    const recipes = await getLikedUserRecipe(userId);
+    res.status(200).json({ message: 'My favorites recipes fetched successfully', recipes});
+    } catch (err) {
+        next(err);
+    }
+}
+
 
 export const getRecipeById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { id } = req.params;

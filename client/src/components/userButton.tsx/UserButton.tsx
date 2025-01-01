@@ -16,7 +16,7 @@ export function UserButton({ user }: UserButtonProps) {
         :
         <Group>
           <Avatar
-            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png"
+            src={userData?.user.image.url}
             radius="xl"
           />
           <div style={{ flex: 1 }}>
