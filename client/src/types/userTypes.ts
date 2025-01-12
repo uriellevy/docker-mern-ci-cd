@@ -8,7 +8,7 @@ export interface IUserInput extends IUserAuth {
         alt: string
     }
     confirmPassword: string
-    role?:UserRole
+    role?: UserRole
 }
 
 export interface IUser extends IUserInput {
@@ -30,6 +30,11 @@ export interface IUsersResponse {
 export interface IUserResponse {
     user: IUser
     message: string
+}
+
+export interface IGoogleLoginPayload {
+    credential: string | undefined
+    client_id: string
 }
 
 export type UserRole = "basic" | "admin"

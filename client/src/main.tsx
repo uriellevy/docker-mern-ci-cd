@@ -20,6 +20,7 @@ import NewRecipe from './pages/newRecipe/NewRecipe.tsx';
 import SingleRecipe from './pages/singleRecipe/SingleRecipe.tsx';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const theme = createTheme({
   fontFamily: 'Montserrat, sans-serif',
@@ -71,14 +72,18 @@ const router = createBrowserRouter([
   },
 ]);
 
+const clientId ="466502018507-0j512ku8j78uepdr77dkfpqbpr6nt1r6.apps.googleusercontent.com";
+
 createRoot(document.getElementById('root')!).render(
 
   <StrictMode>
     <Provider store={store}>
+      <GoogleOAuthProvider clientId={clientId}>
       <MantineProvider theme={theme} defaultColorScheme='dark'>
         <Notifications position={"top-right"} transitionDuration={400} />
         <RouterProvider router={router} />
       </MantineProvider>
+      </GoogleOAuthProvider>
     </Provider>
   </StrictMode>,
 )

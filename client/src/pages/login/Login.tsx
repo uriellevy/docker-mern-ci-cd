@@ -15,11 +15,12 @@ import { z } from 'zod';
 import { NavLink as RouterNavLink, useNavigate } from 'react-router-dom';
 import classes from "./Login.module.scss";
 import { CONSTS } from '../../consts/consts';
-import { useLoginUserMutation } from '../../features/users/UserApi';
+import { useGoogleLoginUserMutation, useLoginUserMutation } from '../../features/users/UserApi';
 import { notifications } from '@mantine/notifications';
 import { useDispatch } from 'react-redux';
 import { setAuthToken } from '../../features/users/authSlice';
 import Cookies from 'js-cookie';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email" }),
@@ -35,6 +36,7 @@ const schema = z.object({
 const Login = () => {
   const { TITLE, NO_PASSWORD_YET, CREATE_ACCOUNT, SUBMIT_TITLE } = CONSTS.LOGIN;
   const [loginUser/* , { isLoading, isError, isSuccess } */] = useLoginUserMutation();
+  const [googleLoginUser/* , { isLoading, isError, isSuccess } */] = useGoogleLoginUserMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -46,7 +48,7 @@ const Login = () => {
 
   const handleSubmit = async (values: any) => {
     form.validate();
-    
+
     try {
       const res = await loginUser(values);
       // @ts-ignore
@@ -56,7 +58,7 @@ const Login = () => {
         navigate("/recipes");
       }
       notifications.show({
-      // @ts-ignore
+        // @ts-ignore
         title: res.data ? res.data.message : res.error.data.message,
         message: '',
         color: res.error ? "red" : "green",
@@ -65,6 +67,33 @@ const Login = () => {
       console.error(error)
     }
   };
+
+  // const onGoogleLoginSubmit = async (credentialResponse: CredentialResponse) => {
+  //   console.log(credentialResponse);  // Check if the response is valid
+  //   try {
+  //     const res = await fetch('http://localhost:8080/api/users/google-auth', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         credential: credentialResponse.credential,
+  //         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID
+  //       }),
+  //     });
+  //     const data = await res.json();
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.error('Error with Google login:', error);
+  //   }
+  // }
+  const onGoogleLoginSubmit = async (credentialResponse: CredentialResponse) => {
+    try {
+      await googleLoginUser({ credential: credentialResponse.credential, client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID });
+    } catch (error) {
+      console.error('Error with Google login:', error);
+    }
+  }
 
   return (
     <Container size={550} my={40} className={classes.loginContainer}>
@@ -102,6 +131,12 @@ const Login = () => {
           <Button type='submit' fullWidth mt="xl">
             {SUBMIT_TITLE}
           </Button>
+          <GoogleLogin
+            onSuccess={onGoogleLoginSubmit}
+          // onError={() => {
+          //   console.log('Login Failed');
+          // }}
+          />
         </Paper>
       </form>
     </Container>

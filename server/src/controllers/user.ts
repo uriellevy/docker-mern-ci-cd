@@ -3,6 +3,9 @@ import { createUser, deleteUser, getUser, getUserByEmail, getUsers, updateUser }
 import { hashPassword, match } from '../utils/bcrypt';
 import { generateToken } from '../utils/jwt';
 import { AppError } from '../exceptions/appError';
+import { OAuth2Client } from "google-auth-library"
+import { IUserInput } from '../interfaces/user';
+
 
 export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { password, email, role } = req.body;
@@ -105,5 +108,60 @@ export const deleteUserById = async (req: Request, res: Response, next: NextFunc
         res.status(200).json({ message: 'User deleted successfully' });
     } catch (err) {
         next(err);
+    }
+};
+
+export const googleLogin = async (req: Request, res: Response, next: NextFunction) => {
+    const { credential, client_id } = req.body;
+    const client = new OAuth2Client();
+
+    try {
+        // Verify the ID token with Google's API
+        const ticket = await client.verifyIdToken({
+            idToken: credential,
+            audience: client_id,
+        });
+        const payload = ticket.getPayload();
+        console.log('Google payload:', payload);
+
+        const { email, given_name, family_name, picture } = payload;
+
+        // Check if the user already exists in the database
+        let user = await getUserByEmail(email);
+        if (!user) {
+            // Create a new user if they don't exist
+            const newUserInput: IUserInput = {
+                name: {
+                    first: given_name,  // from Google payload
+                    last: family_name,  // from Google payload
+                },
+                image: {
+                    url: picture || '',  // use Google profile picture
+                    alt: 'User profile image',
+                },
+                email: email,
+                password: '',  // Google login does not require password
+                role: 'basic',  // Default role
+            };
+
+            // Create the user in the database
+            await createUser(newUserInput);
+        }
+
+        // Generate the token with user._id after ensuring the user exists
+        const token = generateToken({ _id: user._id, role: user.role });
+
+        // Send the token as a cookie and response
+        res
+            .status(200)
+            .cookie('token', token, {
+                httpOnly: true,
+                secure: false, // Set to true in production when using HTTPS
+                maxAge: 3600000, // 1 hour in milliseconds
+            })
+            .json({ message: 'Authentication successful', user });
+    } catch (err) {
+        console.error('Error during Google Authentication:', err);
+        res.status(400).json({ error: 'Authentication failed', details: err });
     }
 };

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IUser, IUserAuth, IUserResponse, IUsersResponse } from '../../types/userTypes';
+import { IGoogleLoginPayload, IUser, IUserAuth, IUserResponse, IUsersResponse } from '../../types/userTypes';
 import { RootState } from '../../store/store';
 
 const baseQuery = fetchBaseQuery({
@@ -52,6 +52,14 @@ export const userApi = createApi({
             }),
             invalidatesTags: ['User'],
         }),
+        googleLoginUser: builder.mutation<IUsersResponse, IGoogleLoginPayload>({
+            query: (googlePayload) => ({
+                url: '/google-auth',
+                method: 'POST',
+                body:googlePayload
+            }),
+            invalidatesTags: ['User'],
+        }),
     }),
 });
 
@@ -61,4 +69,5 @@ export const {
     useCreateUserMutation,
     useLoginUserMutation,
     useLogoutUserMutation,
+    useGoogleLoginUserMutation,
 } = userApi;
