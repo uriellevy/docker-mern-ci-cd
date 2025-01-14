@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch src --legacy-watch --exec tsx src/index.ts"
+    "start": "nodemon --inspect=0.0.0.0:9229 --watch src --legacy-watch --exec tsx src/index.ts"
   },
   "keywords": [],
   "author": "",

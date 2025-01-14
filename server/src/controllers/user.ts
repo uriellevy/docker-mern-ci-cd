@@ -43,9 +43,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
             secure: false,
             sameSite: 'strict',
             maxAge: 24 * 60 * 60 * 1000,
-        });
-
-        res.status(200).json({ message: "user logged in successfully"/* , token */ });
+        }).status(200).json({ message: "user logged in successfully"/* , token */ });
     } catch (err) {
         next(err);
     }
@@ -122,7 +120,7 @@ export const googleLogin = async (req: Request, res: Response, next: NextFunctio
             audience: client_id,
         });
         const payload = ticket.getPayload();
-        console.log('Google payload:', payload);
+        // console.log('Google payload:', payload);
 
         const { email, given_name, family_name, picture } = payload;
 
@@ -152,14 +150,12 @@ export const googleLogin = async (req: Request, res: Response, next: NextFunctio
         const token = generateToken({ _id: user._id, role: user.role });
 
         // Send the token as a cookie and response
-        res
-            .status(200)
-            .cookie('token', token, {
-                httpOnly: true,
-                secure: false, // Set to true in production when using HTTPS
-                maxAge: 3600000, // 1 hour in milliseconds
-            })
-            .json({ message: 'Authentication successful', user });
+        res.cookie('authToken', token, {
+            httpOnly: false,
+            secure: false,
+            sameSite: 'strict',
+            maxAge: 24 * 60 * 60 * 1000,
+        }).json({ message: 'Authentication successful', user });
     } catch (err) {
         console.error('Error during Google Authentication:', err);
         res.status(400).json({ error: 'Authentication failed', details: err });

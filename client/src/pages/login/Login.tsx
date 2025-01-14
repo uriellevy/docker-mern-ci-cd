@@ -1,14 +1,4 @@
-import {
-  TextInput,
-  PasswordInput,
-  Anchor,
-  Paper,
-  Title,
-  Text,
-  Container,
-  Button,
-  NavLink,
-} from '@mantine/core';
+import { TextInput, PasswordInput, Anchor, Paper, Title, Text, Container, Button, NavLink, } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { z } from 'zod';
@@ -17,7 +7,7 @@ import classes from "./Login.module.scss";
 import { CONSTS } from '../../consts/consts';
 import { useGoogleLoginUserMutation, useLoginUserMutation } from '../../features/users/UserApi';
 import { notifications } from '@mantine/notifications';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAuthToken } from '../../features/users/authSlice';
 import Cookies from 'js-cookie';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
@@ -88,8 +78,15 @@ const Login = () => {
   //   }
   // }
   const onGoogleLoginSubmit = async (credentialResponse: CredentialResponse) => {
+    console.log(credentialResponse)
     try {
-      await googleLoginUser({ credential: credentialResponse.credential, client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID });
+     const res = await googleLoginUser({ credential: credentialResponse.credential, client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID });
+      // @ts-ignore
+      if (!res.error) {
+        const authToken = Cookies.get('authToken');
+        authToken && dispatch(setAuthToken(authToken));
+        navigate("/recipes");
+      }
     } catch (error) {
       console.error('Error with Google login:', error);
     }
@@ -133,9 +130,6 @@ const Login = () => {
           </Button>
           <GoogleLogin
             onSuccess={onGoogleLoginSubmit}
-          // onError={() => {
-          //   console.log('Login Failed');
-          // }}
           />
         </Paper>
       </form>
