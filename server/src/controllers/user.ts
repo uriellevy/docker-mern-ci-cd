@@ -43,7 +43,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
             secure: false,
             sameSite: 'strict',
             maxAge: 24 * 60 * 60 * 1000,
-        }).status(200).json({ message: "user logged in successfully"/* , token */ });
+        }).status(200).json({ message: "user logged in successfully" });
     } catch (err) {
         next(err);
     }
@@ -138,8 +138,8 @@ export const googleLogin = async (req: Request, res: Response, next: NextFunctio
                     alt: 'User profile image',
                 },
                 email: email,
-                password: '',  // Google login does not require password
-                role: 'basic',  // Default role
+                password: '',
+                role: 'basic',
             };
 
             // Create the user in the database

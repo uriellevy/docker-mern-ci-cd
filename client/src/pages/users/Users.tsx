@@ -1,78 +1,37 @@
 import cx from 'clsx';
 import { useState } from 'react';
-import { Table, Checkbox, ScrollArea, Group, Avatar, Text, rem } from '@mantine/core';
+import { Table, Checkbox, ScrollArea, Group, Avatar, Text, rem, Loader } from '@mantine/core';
 import classes from './Users.module.scss';
-
-const data = [
-
-  {
-    id: '1',
-    avatar:
-      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png',
-    name: 'Robert Wolfkisser',
-    job: 'Engineer',
-    email: 'rob_wolf@gmail.com',
-  },
-  {
-    id: '2',
-    avatar:
-      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png',
-    name: 'Jill Jailbreaker',
-    job: 'Engineer',
-    email: 'jj@breaker.com',
-  },
-  {
-    id: '3',
-    avatar:
-      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png',
-    name: 'Henry Silkeater',
-    job: 'Designer',
-    email: 'henry@silkeater.io',
-  },
-  {
-    id: '4',
-    avatar:
-      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png',
-    name: 'Bill Horsefighter',
-    job: 'Designer',
-    email: 'bhorsefighter@gmail.com',
-  },
-  {
-    id: '5',
-    avatar:
-      'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png',
-    name: 'Jeremy Footviewer',
-    job: 'Manager',
-    email: 'jeremy@foot.dev',
-  },
-];
+import { useGetUsersQuery } from '../../features/users/UserApi';
 
 const Users = () => {
+  const { data, isLoading, error } = useGetUsersQuery();
+
   const [selection, setSelection] = useState(['1']);
   const toggleRow = (id: string) =>
     setSelection((current) =>
-      current.includes(id) ? current.filter((item) => item !== id) : [...current, id]
+      current.includes(id) ? current.filter((user) => user !== id) : [...current, id]
     );
-  const toggleAll = () =>
-    setSelection((current) => (current.length === data.length ? [] : data.map((item) => item.id)));
 
-  const rows = data.map((item) => {
-    const selected = selection.includes(item.id);
+  if (isLoading) return <Loader color="blue" size="xl" />
+
+  const rows = data?.users.map((user) => {
+    const selected = selection.includes(user._id);
     return (
-      <Table.Tr key={item.id} className={cx({ [classes.rowSelected]: selected })}>
+      <Table.Tr key={user._id} className={cx({ [classes.rowSelected]: selected })}>
         <Table.Td>
-          <Checkbox checked={selection.includes(item.id)} onChange={() => toggleRow(item.id)} />
+          <Checkbox checked={selection.includes(user._id)} onChange={() => toggleRow(user._id)} />
         </Table.Td>
         <Table.Td>
           <Group gap="sm">
-            <Avatar size={26} src={item.avatar} radius={26} />
+            <Avatar size={26} src={user.image.url} radius={26} />
             <Text size="sm" fw={500}>
-              {item.name}
+              {`${user.name.first} ${user.name.last}`}
             </Text>
           </Group>
         </Table.Td>
-        <Table.Td>{item.email}</Table.Td>
-        <Table.Td>{item.job}</Table.Td>
+        <Table.Td>{user.email}</Table.Td>
+        <Table.Td>{user.email}</Table.Td>
       </Table.Tr>
     );
   });
@@ -84,14 +43,14 @@ const Users = () => {
           <Table.Tr>
             <Table.Th style={{ width: rem(40) }}>
               <Checkbox
-                onChange={toggleAll}
-                checked={selection.length === data.length}
-                indeterminate={selection.length > 0 && selection.length !== data.length}
+                // onChange={toggleAll}
+                checked={selection.length === data?.users.length}
+                indeterminate={selection.length > 0 && selection.length !== data?.users.length}
               />
             </Table.Th>
             <Table.Th>User</Table.Th>
             <Table.Th>Email</Table.Th>
-            <Table.Th>Job</Table.Th>
+            <Table.Th></Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{rows}</Table.Tbody>

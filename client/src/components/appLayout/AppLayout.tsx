@@ -45,14 +45,12 @@ const AppLayout = () => {
         <MdSunny
             color={theme.colors.yellow[4]}
             size={"1rem"}
-        // onClick={toggleColorScheme}
         />
     );
 
     const moonIcon = (
         <FaMoon
             color={theme.colors.blue[6]}
-            // onClick={toggleColorScheme}
             size={"1rem"}
         />
     );
