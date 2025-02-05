@@ -23,18 +23,22 @@ export const recipeApi = createApi({
     getRecipes: builder.query<IRecipesResponse, void>({
       query: () => '/',
       providesTags: ['Recipe'],
+      keepUnusedDataFor:60, // Cache is kept for 60 seconds
     }),
     getMyRecipes: builder.query<IRecipesResponse, void>({
       query: () => '/myRecipes',
       providesTags: ['Recipe'],
+      keepUnusedDataFor:60,
     }),
     getRecipe: builder.query<IRecipeResponse, string>({
       query: (id) => `/${id}`,
       providesTags: (_result, _error, id) => [{ type: 'Recipe', id }],
+      keepUnusedDataFor:60,
     }),
     getLikedRecipe: builder.query<IRecipesResponse, void>({
       query: () => "/favorites",
       providesTags: ['Recipe'],
+      keepUnusedDataFor:60,
     }),
     createRecipe: builder.mutation<IRecipe, Partial<IRecipe>>({
       query: (recipe) => ({

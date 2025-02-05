@@ -21,6 +21,7 @@ import SingleRecipe from './pages/singleRecipe/SingleRecipe.tsx';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import "./assets/locales/i18n.ts"; 
 
 const theme = createTheme({
   fontFamily: 'Montserrat, sans-serif',

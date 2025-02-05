@@ -24,10 +24,12 @@ export const userApi = createApi({
         getUsers: builder.query<IUsersResponse, void>({
             query: () => '/',
             providesTags: ['User'],
+            keepUnusedDataFor:60, // Cache is kept for 60 seconds
         }),
         getUsersById: builder.query<IUserResponse,string>({
             query: (id) => `/${id}`,
             providesTags: (_result, _error, id) => [{ type: 'User', id }],
+            keepUnusedDataFor:60,
         }),
         createUser: builder.mutation<IUsersResponse, Partial<IUser>>({
             query: (user) => ({

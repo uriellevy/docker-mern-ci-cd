@@ -5,18 +5,18 @@ import { LuVegan } from "react-icons/lu";
 import { Card, Image, Text, Group, Badge, Button, ActionIcon, NavLink } from '@mantine/core';
 import { IRecipe } from '../../../types/recipeTyps';
 import classes from "../Recipes.module.scss"
-import { CONSTS } from "../../../consts/consts";
 import { NavLink as RouterNavLink } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { useToggleRecipeLikeMutation } from "../../../features/recipes/RecipeApi";
+import { useTranslation } from "react-i18next";
 
 interface IRecipesCardProps {
   recipe: IRecipe
 }
 
 const RecipesCard = ({ recipe }: IRecipesCardProps) => {
-  const { SHOW_DETAILS, VEGAN_LABEL } = CONSTS.RECIPES;
+  const { t } = useTranslation();
   const token = useSelector((state: RootState) => state.auth.token);
   const user = useSelector((state: RootState) => state.auth.user);
   const [toggleRecipeLike] = useToggleRecipeLikeMutation();
@@ -58,7 +58,7 @@ const RecipesCard = ({ recipe }: IRecipesCardProps) => {
       <Card.Section className={classes.section} mt="md">
         <Group gap={5}>
           {recipe.isVegan && <Badge size="lg" variant="light" className={classes.badge} key={"Vegan"} leftSection={<LuVegan size={15} color="green" />}>
-            {VEGAN_LABEL}
+            {t("RECIPES.VEGAN_LABEL")}
           </Badge>}
           {+recipe.spicyLevel && <Badge size="lg" variant="light" className={classes.badge} key={"SpicyLevel"} leftSection={recipeLevelIcons} />}
         </Group>
@@ -69,7 +69,7 @@ const RecipesCard = ({ recipe }: IRecipesCardProps) => {
             <NavLink
             className="nav-link"
               to={`/recipes/${recipe._id}`}
-              label={SHOW_DETAILS}
+              label={t("RECIPES.SHOW_DETAILS")}
               component={RouterNavLink}
               onClick={close}
               styles={{

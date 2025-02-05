@@ -1,21 +1,7 @@
 import { Container, Grid, Skeleton } from '@mantine/core'
-import { RootState } from '../../store/store'
-import { useSelector } from 'react-redux'
-import Cookies from 'js-cookie';
-import { useEffect, useState } from 'react';
 const child = <Skeleton height={140} radius="md" animate={true} />
 
 const Home = () => {
-  const recipes = useSelector((state: RootState) => state.recipes)
-  // const [authToken, setAuthToken] = useState("");
-  // console.log(authToken)
-
-  // useEffect(() => {
-  //   const token = Cookies.get('authToken');
-  //   if (token) {
-  //     setAuthToken(token);
-  //   }
-  // }, []);
 
   return (
     <Container my="md">

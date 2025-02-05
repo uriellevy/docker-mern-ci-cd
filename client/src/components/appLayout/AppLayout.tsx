@@ -8,14 +8,15 @@ import { BiSolidExit } from "react-icons/bi";
 import { SiFoodpanda } from "react-icons/si";
 import classes from "./AppLayout.module.scss"
 import { UserButton } from '../userButton.tsx/UserButton';
-import { CONSTS } from '../../consts/consts';
 import { useLogoutUserMutation } from '../../features/users/UserApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { clearAuthToken } from '../../features/users/authSlice';
 import { notifications } from '@mantine/notifications';
+import { useTranslation } from "react-i18next";
 
 const AppLayout = () => {
+    const { t } = useTranslation();
     const { toggleColorScheme } = useMantineColorScheme();
     const [opened, { toggle, close }] = useDisclosure();
     const [logoutUser/* , { isLoading, isError, isSuccess } */] = useLogoutUserMutation();
@@ -75,7 +76,7 @@ const AppLayout = () => {
                     />
                     <Container className={classes.logoContainer}>
                         <SiFoodpanda size={"2.5rem"} className={classes.appLogo} />
-                        <Title order={3}>{CONSTS.APP_HEADER_NAME}</Title>
+                        <Title order={3}>{t("APP_HEADER_NAME")}</Title>
                     </Container>
                     <Switch size="md" color="dark.4" onLabel={sunIcon} offLabel={moonIcon} onChange={toggleColorScheme} className={classes.switchToggler} />
                 </AppShell.Header>

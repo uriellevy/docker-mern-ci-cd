@@ -4,10 +4,10 @@ import classes from "./SingleRecipe.module.scss";
 import { Card, Image, Text, Group, Badge, Container, Paper, RingProgress, Center, rem, Button, Loader } from '@mantine/core';
 import { AiFillLike } from "react-icons/ai";
 import { RiProgress6Fill } from "react-icons/ri";
-import { CONSTS } from '../../consts/consts';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { FaTrashAlt, FaRegEdit } from "react-icons/fa";
+import { useTranslation } from 'react-i18next';
 
 const DIFFICULTY_STATS = {
     "Easy": { progress: 33, color: "green" },
@@ -16,9 +16,9 @@ const DIFFICULTY_STATS = {
 }
 
 const SingleRecipe = () => {
+    const {t} = useTranslation();
     const { id } = useParams<{ id: string }>();
     const { data: recipe, error, isLoading } = useGetRecipeQuery(id || "");
-    const { PREP_TIME, COOK_TIME, SERVINGS, DIFFICULTY_LEVEL, STEPS } = CONSTS.SINGLE_RECIPE;
     const user = useSelector((state: RootState) => state.auth.user);
     const isCurrentUserCard = recipe?.recipe.userId === user?._id;
 
@@ -59,7 +59,7 @@ const SingleRecipe = () => {
                                 />
                                 <div>
                                     <Text c="dimmed" size="xs" tt="uppercase" fw={700}>
-                                        {DIFFICULTY_LEVEL}
+                                        {t("SINGLE_RECIPE.DIFFICULTY_LEVEL")}
                                     </Text>
                                     <Text fw={700} size="xl">
                                         {recipe.recipe.difficulty}
@@ -86,7 +86,7 @@ const SingleRecipe = () => {
                     <Card.Section className={classes.section}>
                         <div className={classes.stats}>
                             <Text size="xs">
-                                {COOK_TIME}
+                                {t("SINGLE_RECIPE.COOK_TIME")}
                             </Text>
                             <Text fw={'bold'} size="sm">
                                 {`${recipe.recipe.cookTime} (min)`}
@@ -94,7 +94,7 @@ const SingleRecipe = () => {
                         </div>
                         <div className={classes.stats}>
                             <Text size="xs">
-                                {PREP_TIME}
+                                {t("SINGLE_RECIPE.PREP_TIME")}
                             </Text>
                             <Text fw={'bold'} size="sm">
                                 {`${recipe.recipe.prepTime} (min)`}
@@ -102,7 +102,7 @@ const SingleRecipe = () => {
                         </div>
                         <div className={classes.stats}>
                             <Text size="xs">
-                                {SERVINGS}
+                                {t("SINGLE_RECIPE.SERVINGS")}
                             </Text>
                             <Text fw={'bold'} size="sm">
                                 {`${recipe.recipe.servings} Persons`}
@@ -115,7 +115,7 @@ const SingleRecipe = () => {
                         ))}
                     </Card.Section>
                     <Card.Section className={`${classes['section']} ${classes["instructions"]}`} style={{ display: "block" }}>
-                        <Text fw={700} td="underline">{STEPS}</Text>
+                        <Text fw={700} td="underline">{t("SINGLE_RECIPE.STEPS")}</Text>
                         {recipe.recipe.instructions.map((instruction, index) => (
                             <Text key={index} tt="capitalize" fs="italic">{`${index + 1}.${instruction}`}</Text>
                         ))}

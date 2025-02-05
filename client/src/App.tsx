@@ -3,7 +3,7 @@ import useAuthInitialization from './hooks/useAuthInitialization';
 
 function App() {
   useAuthInitialization();
-  
+
   return (
     <div className='app'>
       <AppLayout />

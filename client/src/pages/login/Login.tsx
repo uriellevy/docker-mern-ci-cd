@@ -4,13 +4,13 @@ import { zodResolver } from 'mantine-form-zod-resolver';
 import { z } from 'zod';
 import { NavLink as RouterNavLink, useNavigate } from 'react-router-dom';
 import classes from "./Login.module.scss";
-import { CONSTS } from '../../consts/consts';
 import { useGoogleLoginUserMutation, useLoginUserMutation } from '../../features/users/UserApi';
 import { notifications } from '@mantine/notifications';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setAuthToken } from '../../features/users/authSlice';
 import Cookies from 'js-cookie';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { useTranslation } from "react-i18next";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email" }),
@@ -24,7 +24,7 @@ const schema = z.object({
 });
 
 const Login = () => {
-  const { TITLE, NO_PASSWORD_YET, CREATE_ACCOUNT, SUBMIT_TITLE } = CONSTS.LOGIN;
+  const { t } = useTranslation();
   const [loginUser/* , { isLoading, isError, isSuccess } */] = useLoginUserMutation();
   const [googleLoginUser/* , { isLoading, isError, isSuccess } */] = useGoogleLoginUserMutation();
   const navigate = useNavigate();
@@ -58,25 +58,6 @@ const Login = () => {
     }
   };
 
-  // const onGoogleLoginSubmit = async (credentialResponse: CredentialResponse) => {
-  //   console.log(credentialResponse);  // Check if the response is valid
-  //   try {
-  //     const res = await fetch('http://localhost:8080/api/users/google-auth', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         credential: credentialResponse.credential,
-  //         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID
-  //       }),
-  //     });
-  //     const data = await res.json();
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.error('Error with Google login:', error);
-  //   }
-  // }
   const onGoogleLoginSubmit = async (credentialResponse: CredentialResponse) => {
     console.log(credentialResponse)
     try {
@@ -96,15 +77,15 @@ const Login = () => {
     <Container size={550} my={40} className={classes.loginContainer}>
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Title ta="center" className={classes.title}>
-          {TITLE}
+          {t("LOGIN.TITLE")}
         </Title>
         <Text c="dimmed" size="sm" ta="center" mt={5}>
-          {NO_PASSWORD_YET}
+          {t("LOGIN.NO_PASSWORD_YET")}
           <Anchor size="sm" component="button">
             <NavLink
               className={classes.createAccount}
               to="/signup"
-              label={CREATE_ACCOUNT}
+              label={t("LOGIN.CREATE_ACCOUNT")}
               c="dimmed" ta="center" color='' mt={5}
               component={RouterNavLink}
             />
@@ -126,7 +107,7 @@ const Login = () => {
             mt="md"
           />
           <Button type='submit' fullWidth mt="xl">
-            {SUBMIT_TITLE}
+            {t("LOGIN.SUBMIT_TITLE")}
           </Button>
           <GoogleLogin
             onSuccess={onGoogleLoginSubmit}

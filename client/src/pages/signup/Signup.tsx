@@ -10,11 +10,11 @@ import {
 import { useForm } from '@mantine/form';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { z } from 'zod';
-import { CONSTS } from '../../consts/consts';
 import classes from "./Signup.module.scss";
 import { useCreateUserMutation } from '../../features/users/UserApi';
 import { useNavigate } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
+import { useTranslation } from 'react-i18next';
 
 const schema = z.object({
   name: z.object({
@@ -44,7 +44,7 @@ const schema = z.object({
 });
 
 const Signup = () => {
-  const { TITLE, SUBMIT_TITLE } = CONSTS.SIGNUP;
+  const { t } = useTranslation();
   const [createUser/* , { isLoading, isError, isSuccess } */] = useCreateUserMutation();
   const navigate = useNavigate();
   const form = useForm({
@@ -63,10 +63,10 @@ const Signup = () => {
       }
       notifications.show({
         // @ts-ignore
-          title: res.data ? res.data.message : res.error.data.message,
-          message: '',
-          color: res.error ? "red" : "green",
-        })
+        title: res.data ? res.data.message : res.error.data.message,
+        message: '',
+        color: res.error ? "red" : "green",
+      })
     } catch (error) {
       console.error(error)
     }
@@ -76,7 +76,7 @@ const Signup = () => {
     <Container size={550} my={40} className={classes.loginContainer}>
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Title ta="center" className={classes.title}>
-          {TITLE}
+          {t("SIGNUP.TITLE")}
         </Title>
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
           <SimpleGrid cols={{ base: 1, sm: 2 }} mt="xl">
@@ -136,7 +136,7 @@ const Signup = () => {
             {...form.getInputProps('confirmPassword')}
           />
           <Button type="submit" fullWidth mt="xl">
-            {SUBMIT_TITLE}
+            {t("SIGNUP.SUBMIT_TITLE")}
           </Button>
         </Paper>
       </form>
