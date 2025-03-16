@@ -34,4 +34,5 @@ app.listen(parseInt(PORT), '0.0.0.0',  () => {
   console.log(`Server is running on port:${PORT}`);
 });
 
+export { app };// Export app for testing
 connectDB();
