@@ -14,7 +14,22 @@ dotenv.config();
 const PORT = process.env.PORT;
 
 app.use(morgan('dev'));
-app.use(cors({origin: 'http://localhost:5173',credentials: true,}));//allow cookies
+// app.use(cors({origin: 'http://localhost:5173',credentials: true,}));//allow cookies
+const allowedOrigins = ["http://localhost:5173", "https://docker-mern-ci-cd-client.vercel.app"];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
