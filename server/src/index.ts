@@ -15,7 +15,11 @@ const PORT = process.env.PORT;
 
 app.use(morgan('dev'));
 // app.use(cors({origin: 'http://localhost:5173',credentials: true,}));//allow cookies
-const allowedOrigins = ["http://localhost:5173", "https://docker-mern-ci-cd-client.vercel.app"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://docker-mern-ci-cd-client.vercel.app",
+  "https://docker-mern-ci-cd.vercel.app", // Add backend domain too
+];
 app.use(
   cors({
     origin: (origin, callback) => {
