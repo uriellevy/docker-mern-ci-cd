@@ -1,4 +1,4 @@
-const apiPrefix = "localhost:8080/api";
+const apiPrefix = `${import.meta.env.VITE_API_URL}/api` || "localhost:8080/api";
 const recipesEntityPrefix = "/recipes";
 const usersPrefix = "/users";
 

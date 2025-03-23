@@ -4,7 +4,7 @@ import classes from "./Recipes.module.scss";
 import { Loader } from '@mantine/core';
 
 const Recipes = () => {
-  const { data: response, isLoading, error } = useGetRecipesQuery();
+  const { data: response, isLoading } = useGetRecipesQuery();
 
   return (
     <div className={classes.recipesContainer}>

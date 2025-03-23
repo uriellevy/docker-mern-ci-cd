@@ -3,7 +3,7 @@ import { IRecipe, IRecipeResponse, IRecipesResponse } from '../../types/recipeTy
 import { RootState } from '../../store/store';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:8080/api/recipes',
+  baseUrl: `${import.meta.env.VITE_API_URL}/api/recipes`,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
 

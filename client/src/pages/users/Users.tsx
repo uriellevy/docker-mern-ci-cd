@@ -5,7 +5,7 @@ import classes from './Users.module.scss';
 import { useGetUsersQuery } from '../../features/users/UserApi';
 
 const Users = () => {
-  const { data, isLoading, error } = useGetUsersQuery();
+  const { data, isLoading } = useGetUsersQuery();
 
   const [selection, setSelection] = useState(['1']);
   const toggleRow = (id: string) =>
@@ -43,7 +43,6 @@ const Users = () => {
           <Table.Tr>
             <Table.Th style={{ width: rem(40) }}>
               <Checkbox
-                // onChange={toggleAll}
                 checked={selection.length === data?.users.length}
                 indeterminate={selection.length > 0 && selection.length !== data?.users.length}
               />

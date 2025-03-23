@@ -18,7 +18,7 @@ const DIFFICULTY_STATS = {
 const SingleRecipe = () => {
     const {t} = useTranslation();
     const { id } = useParams<{ id: string }>();
-    const { data: recipe, error, isLoading } = useGetRecipeQuery(id || "");
+    const { data: recipe, isLoading } = useGetRecipeQuery(id || "");
     const user = useSelector((state: RootState) => state.auth.user);
     const isCurrentUserCard = recipe?.recipe.userId === user?._id;
 

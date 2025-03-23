@@ -3,7 +3,7 @@ import { IGoogleLoginPayload, IUser, IUserAuth, IUserResponse, IUsersResponse } 
 import { RootState } from '../../store/store';
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:8080/api/users',
+    baseUrl: `${import.meta.env.VITE_API_URL}/api/users`,
     credentials: "include",
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
