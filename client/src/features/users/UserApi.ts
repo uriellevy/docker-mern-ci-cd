@@ -4,7 +4,7 @@ import { RootState } from '../../store/store';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_API_URL}/api/users`,
-    credentials: "include",
+    // credentials: "include",
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
   
