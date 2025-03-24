@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import morgan from 'morgan';
 import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db";
-import {user, recipe} from "./routes";
+import { user, recipe } from "./routes";
 import { AppError } from "./exceptions/appError";
 import { errorHandler } from "./middleware/errorHandler";
 
@@ -14,42 +14,25 @@ dotenv.config();
 const PORT = process.env.PORT;
 
 app.use(morgan('dev'));
-// app.use(cors({origin: 'http://localhost:5173',credentials: true,}));//allow cookies
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://docker-mern-ci-cd-client.vercel.app",
-  "https://docker-mern-ci-cd.vercel.app", // Add backend domain too
-];
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: [
+      "http://localhost:5173",
+      "https://docker-mern-ci-cd-client.vercel.app",
+      "https://docker-mern-ci-cd.vercel.app", // Add backend domain too
+    ],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-// Handle preflight requests properly
-app.options("*", (req, res) => {
-  res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.sendStatus(204);
-});
 
 app.use(express.json());
 app.use(cookieParser());
 
 
-app.use("/api/users",user);
-app.use("/api/recipes",recipe);
+app.use("/api/users", user);
+app.use("/api/recipes", recipe);
 
 // Handle unhandled routes
 app.all('*', (req, res, next) => {
@@ -59,10 +42,9 @@ app.all('*', (req, res, next) => {
 // Global error handling middleware
 app.use(errorHandler);
 
-app.listen(parseInt(PORT), '0.0.0.0',  () => {
+app.listen(parseInt(PORT), '0.0.0.0', () => {
   console.log(`Server is running on port:${PORT}`);
 });
 
 // export { app };// Export app for testing
-export default app;
 connectDB();
