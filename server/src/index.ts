@@ -18,8 +18,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://docker-mern-ci-cd-client.vercel.app",
-      "https://docker-mern-ci-cd.vercel.app", // Add backend domain too
+      "https://docker-mern-ci-cd-5raf.vercel.app",
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
